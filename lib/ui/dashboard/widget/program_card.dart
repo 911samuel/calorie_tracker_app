@@ -14,7 +14,7 @@ class ProgramCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.cardGray,
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Row(
@@ -37,8 +37,8 @@ class ProgramCard extends StatelessWidget {
                 const SizedBox(height: AppDimensions.spaceS),
                 LinearProgressIndicator(
                   value: progress,
-                  color: AppColors.primaryNeon,
-                  backgroundColor: AppColors.darkBackground,
+                  color: AppColors.primaryGreen,
+                  backgroundColor: AppColors.background,
                 ),
               ],
             ),

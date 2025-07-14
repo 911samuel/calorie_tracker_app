@@ -15,14 +15,14 @@ class ProgramIcon extends StatelessWidget {
       margin: const EdgeInsets.only(right: AppDimensions.spaceM),
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.cardGray,
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
 
         children: [
-          Icon(icon, color: AppColors.primaryNeon),
+          Icon(icon, color: AppColors.primaryGreen),
           const SizedBox(height: AppDimensions.spaceS),
           Text(label, style: AppTextStyles.bodySmall),
         ],

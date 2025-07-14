@@ -16,7 +16,7 @@ class StatsRow extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(AppDimensions.paddingM),
             decoration: BoxDecoration(
-              color: AppColors.primaryNeon,
+              color: AppColors.primaryGreen,
               borderRadius: BorderRadius.circular(AppDimensions.radiusL),
             ),
             child: Column(
@@ -24,7 +24,7 @@ class StatsRow extends StatelessWidget {
               children: [
                 Text(
                   'Calories',
-                  style: AppTextStyles.h4.copyWith(color: AppColors.darkBackground),
+                  style: AppTextStyles.h4.copyWith(color: AppColors.background),
                 ),
 
                 const SizedBox(height: AppDimensions.spaceM),
@@ -37,8 +37,8 @@ class StatsRow extends StatelessWidget {
                         width: 120,
                         child: CircularProgressIndicator(
                           value: 0.73,
-                          color: AppColors.darkBackground,
-                          backgroundColor: AppColors.textWhite,
+                          color: AppColors.background,
+                          backgroundColor: AppColors.textPrimary,
                           strokeWidth: 10,
                         ),
                       ),
@@ -48,14 +48,14 @@ class StatsRow extends StatelessWidget {
                           Text(
                             '730',
                             style: AppTextStyles.h3.copyWith(
-                              color: AppColors.darkBackground,
+                              color: AppColors.background,
                             ),
                           ),
                           const SizedBox(height: AppDimensions.spaceXS),
                           Text(
                             '/kCal',
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.darkBackground,
+                              color: AppColors.background,
                             ),
                           ),
                         ],
@@ -74,12 +74,12 @@ class StatsRow extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(AppDimensions.paddingM),
                 decoration: BoxDecoration(
-                  color: AppColors.cardGray,
+                  color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                 ),
                 child: Column(
                   children: const [
-                    Icon(Icons.directions_walk, color: AppColors.primaryNeon),
+                    Icon(Icons.directions_walk, color: AppColors.primaryGreen),
                     SizedBox(height: AppDimensions.spaceS),
                     Text('Steps', style: AppTextStyles.subtitle),
                     Text('230', style: AppTextStyles.h4),
@@ -90,7 +90,7 @@ class StatsRow extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(AppDimensions.paddingM),
                 decoration: BoxDecoration(
-                  color: AppColors.cardGray,
+                  color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                 ),
                 child: Column(
@@ -103,8 +103,8 @@ class StatsRow extends StatelessWidget {
                         children: [
                           CircularProgressIndicator(
                             value: 5 / 8,
-                            color: AppColors.primaryNeon,
-                            backgroundColor: AppColors.darkBackground,
+                            color: AppColors.primaryGreen,
+                            backgroundColor: AppColors.background,
                             strokeWidth: 5,
                           ),
                           const Text(''),

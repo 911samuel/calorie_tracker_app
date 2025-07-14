@@ -11,7 +11,7 @@ class WorkProgress extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.cardGray,
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Row(
@@ -33,8 +33,8 @@ class WorkProgress extends StatelessWidget {
                 width: 50,
                 child: CircularProgressIndicator(
                   value: 0.75,
-                  color: AppColors.primaryNeon,
-                  backgroundColor: AppColors.cardGray,
+                  color: AppColors.primaryGreen,
+                  backgroundColor: AppColors.cardBackground,
                   strokeWidth: 5,
                 ),
               ),
@@ -45,4 +45,4 @@ class WorkProgress extends StatelessWidget {
       ),
     );
   }
-  }
+}

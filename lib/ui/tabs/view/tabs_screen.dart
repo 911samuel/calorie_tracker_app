@@ -14,9 +14,7 @@ class TabsScreen extends ConsumerStatefulWidget {
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-   DashboardScreen()
-  ];
+  final List<Widget> _screens = [DashboardScreen()];
 
   void _onTappedItem(int index) {
     setState(() {
@@ -31,9 +29,9 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTappedItem,
-        backgroundColor: AppColors.cardGray,
-        selectedItemColor: AppColors.primaryNeon,
-        unselectedItemColor: AppColors.textLightGray,
+        backgroundColor: AppColors.cardBackground,
+        selectedItemColor: AppColors.primaryGreen,
+        unselectedItemColor: AppColors.textSecondary,
         type: BottomNavigationBarType.fixed,
         elevation: AppDimensions.bottomNavElevation,
         items: const [
