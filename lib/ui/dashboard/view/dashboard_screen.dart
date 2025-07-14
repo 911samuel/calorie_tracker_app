@@ -34,9 +34,9 @@ class DashboardScreen extends ConsumerWidget {
           ],
         ),
         actions: const [
-          Icon(Icons.emoji_events, color: AppColors.primaryNeon),
+          Icon(Icons.emoji_events, color: AppColors.primaryGreen),
           SizedBox(width: AppDimensions.spaceS),
-          Icon(Icons.notifications, color: AppColors.primaryNeon),
+          Icon(Icons.notifications, color: AppColors.primaryGreen),
           SizedBox(width: AppDimensions.spaceM),
         ],
       ),

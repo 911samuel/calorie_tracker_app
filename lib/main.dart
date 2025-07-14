@@ -14,7 +14,7 @@ class FitTrackApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fitness Tracker',
-      theme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
       home: const TabsScreen(),
       debugShowCheckedModeBanner: false,
     );
