@@ -1,22 +1,27 @@
-import 'package:calorie_tracker_app/ui/tabs/view/tabs_screen.dart';
 import 'package:flutter/material.dart';
-import 'core/theme/app_theme.dart';
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'routes/router.dart';
+import 'routes/routes.dart';
 
-void main() {
-  runApp(const ProviderScope(child: FitTrackApp()));
+void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  FlutterNativeSplash.remove();
+  runApp(const MyApp());
 }
 
-class FitTrackApp extends StatelessWidget {
-  const FitTrackApp({super.key});
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fitness Tracker',
-      theme: AppTheme.lightTheme,
-      home: const TabsScreen(),
+      title: 'Calorie Tracker App',
       debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.onboarding,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }
