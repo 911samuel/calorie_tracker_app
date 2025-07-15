@@ -8,12 +8,12 @@ class SharedPrefsService {
   Future<void> saveUser(User user) async {
     final prefs = await SharedPreferences.getInstance();
     final userMap = {
-      'gender': user.gender.index,
+      'gender': user.gender?.index,
       'age': user.age,
       'height': user.height,
       'weight': user.weight,
-      'activityLevel': user.activityLevel.index,
-      'goal': user.goal.index,
+      'activityLevel': user.activityLevel?.index,
+      'goal': user.goal?.index,
       'carbPercentage': user.carbPercentage,
       'proteinPercentage': user.proteinPercentage,
       'fatPercentage': user.fatPercentage,

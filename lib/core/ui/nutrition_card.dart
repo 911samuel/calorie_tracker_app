@@ -507,7 +507,7 @@ class _NutritionCardState extends State<NutritionCard> {
             keyboardType: TextInputType.number,
             suffixText: widget.inputSuffix ?? 'g',
             suffixTextColor: AppColors.textGray,
-            // onChanged: (value) => widget.onInputChanged?.call(value),
+            onChanged: (value) => widget.onInputChanged?.call(value),
             // onSubmitted: (value) {
             //   widget.onInputSubmitted?.call(value);
             //   setState(() {

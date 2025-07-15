@@ -6,7 +6,7 @@ class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.onboarding:
-        return MaterialPageRoute(builder: (_) => const OnboradingScreen());
+        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
 
       default:
         return MaterialPageRoute(

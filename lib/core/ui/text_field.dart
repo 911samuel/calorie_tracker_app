@@ -34,7 +34,7 @@ class CustomTextField extends StatefulWidget {
     this.errorText,
     this.enabled = true,
     this.suffixText, // Add suffix text parameter
-    this.suffixTextColor, // Add suffix text color parameter
+    this.suffixTextColor, required Null Function(dynamic value) onChanged, // Add suffix text color parameter
   });
 
   @override
