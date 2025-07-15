@@ -1,4 +1,5 @@
 import 'package:calorie_tracker_app/domain/user.dart';
+import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:calorie_tracker_app/ui/onboarding/view_model/onboarding_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +36,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Color(0xFF4CAF50), // Green color
+        statusBarColor: Color(0xFF4CAF50), 
         statusBarIconBrightness: Brightness.light,
       ),
     );
@@ -57,6 +58,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       setState(() {
         _currentStep++;
       });
+      if (_currentStep == 7) {
+        AppRoutes.home;
+      }
     } else {
       _saveUser();
     }
@@ -119,7 +123,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
                 child: const Text(
                   'Next',
@@ -141,9 +148,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       case 2:
         return AgeStep(onNext: _nextStep, ageController: _ageController);
       case 3:
-        return HeightStep(onNext: _nextStep, heightController: _heightController);
+        return HeightStep(
+          onNext: _nextStep,
+          heightController: _heightController,
+        );
       case 4:
-        return WeightStep(onNext: _nextStep, weightController: _weightController);
+        return WeightStep(
+          onNext: _nextStep,
+          weightController: _weightController,
+        );
       case 5:
         return ActivityLevelStep(onNext: _nextStep);
       case 6:

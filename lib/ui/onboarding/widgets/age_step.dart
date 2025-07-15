@@ -20,6 +20,7 @@ class AgeStep extends ConsumerWidget {
         CustomTextField(
           controller: ageController,
           keyboardType: TextInputType.number,
+          suffixText: "Years",
           onChanged: (value) {
             final intAge = int.tryParse(value);
             if (intAge != null) {

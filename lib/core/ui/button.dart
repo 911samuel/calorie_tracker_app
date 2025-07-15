@@ -138,7 +138,7 @@ class ToggleButtonGroup extends StatefulWidget {
     this.selectedIndex,
     this.onSelectionChanged,
     this.variant = ButtonVariant.primary,
-    this.spacing = 16,
+    this.spacing = 7,
   });
 
   @override
