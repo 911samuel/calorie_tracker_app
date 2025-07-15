@@ -16,8 +16,9 @@ class CustomTextField extends StatefulWidget {
   final ValidationState validationState;
   final String? errorText;
   final bool enabled;
-  final String? suffixText; // New parameter for suffix text
-  final Color? suffixTextColor; // Color for suffix text
+  final String? suffixText;
+  final Color? suffixTextColor;
+  final Function(String)? onChanged; // Fixed this line
 
   const CustomTextField({
     super.key,
@@ -33,8 +34,9 @@ class CustomTextField extends StatefulWidget {
     this.validationState = ValidationState.none,
     this.errorText,
     this.enabled = true,
-    this.suffixText, // Add suffix text parameter
-    this.suffixTextColor, required Null Function(dynamic value) onChanged, // Add suffix text color parameter
+    this.suffixText,
+    this.suffixTextColor,
+    this.onChanged, // Fixed this line
   });
 
   @override
@@ -72,6 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
             enabled: widget.enabled,
+            onChanged: widget.onChanged, // Added this line
             style: const TextStyle(color: AppColors.textBlack, fontSize: 16),
             decoration: InputDecoration(
               hintText: widget.hintText,

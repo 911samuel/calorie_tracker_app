@@ -34,11 +34,6 @@ class WeightGoalStep extends ConsumerWidget {
           },
           variant: ButtonVariant.primary,
         ),
-        const SizedBox(height: 24),
-        CustomButton(
-          text: "Next",
-          onPressed: user?.goal != null ? onNext : null,
-        ),
       ],
     );
   }

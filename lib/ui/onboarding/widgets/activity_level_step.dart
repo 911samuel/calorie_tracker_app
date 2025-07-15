@@ -34,11 +34,6 @@ class ActivityLevelStep extends ConsumerWidget {
           },
           variant: ButtonVariant.primary,
         ),
-        const SizedBox(height: 24),
-        CustomButton(
-          text: "Next",
-          onPressed: user?.activityLevel != null ? onNext : null,
-        ),
       ],
     );
   }

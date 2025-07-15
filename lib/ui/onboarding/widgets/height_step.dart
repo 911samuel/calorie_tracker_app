@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:calorie_tracker_app/core/ui/button.dart';
 import 'package:calorie_tracker_app/core/ui/text_field.dart';
 import 'package:calorie_tracker_app/ui/onboarding/view_model/onboarding_view_model.dart';
 
@@ -12,8 +11,6 @@ class HeightStep extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(onboardingViewModelProvider).user;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -29,11 +26,6 @@ class HeightStep extends ConsumerWidget {
               ref.read(onboardingViewModelProvider.notifier).updateHeight(doubleHeight);
             }
           },
-        ),
-        const SizedBox(height: 24),
-        CustomButton(
-          text: "Next",
-          onPressed: (user?.height != null && user!.height! > 0) ? onNext : null,
         ),
       ],
     );
