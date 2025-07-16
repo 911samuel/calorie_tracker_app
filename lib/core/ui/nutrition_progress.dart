@@ -98,7 +98,9 @@ class NutritionRingProgress extends StatelessWidget {
                         child: Container(
                           width: carbsWidth,
                           height: 20,
-                          color: AppColors.carbsColor, // Removed border radius
+                          decoration: BoxDecoration(
+                            color: AppColors.carbsColor,
+                          ),
                         ),
                       ),
                     // Protein section
@@ -108,8 +110,9 @@ class NutritionRingProgress extends StatelessWidget {
                         child: Container(
                           width: proteinWidth,
                           height: 20,
-                          color:
-                              AppColors.proteinColor, // Removed border radius
+                          decoration: BoxDecoration(
+                            color: AppColors.proteinColor,
+                          ),
                         ),
                       ),
                     // Fat section
@@ -119,7 +122,12 @@ class NutritionRingProgress extends StatelessWidget {
                         child: Container(
                           width: fatWidth,
                           height: 20,
-                          color: AppColors.fatColor, // Removed border radius
+                          decoration: BoxDecoration(
+                            color: AppColors.fatColor,
+                            borderRadius: BorderRadius.horizontal(
+                              right: Radius.circular(10),
+                            ),
+                          ),
                         ),
                       ),
                   ],
@@ -195,7 +203,10 @@ class NutritionRingProgress extends StatelessWidget {
               ),
               Text(
                 label,
-                style: const TextStyle(fontSize: 12, color: AppColors.cardWhite),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.cardWhite,
+                ),
               ),
             ],
           ),
