@@ -61,10 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:
-            Colors.transparent, // important to allow our Container to show
+        backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 280,
+        automaticallyImplyLeading: false,
         flexibleSpace: ClipRRect(
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(40),
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: ListView(
         children: [
-             Padding(
+          Padding(
             padding: const EdgeInsets.all(16.0),
             child: DatePickerHeader(
               selectedDate: selectedDate,
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 21,
             ),
             foodItems: breakfastItems,
-            onTap: () => print('Add breakfast tapped'),
+            onTap: () => debugPrint('Add breakfast tapped'),
           ),
           NutritionCard(
             type: NutritionCardType.mealSelector,
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 0,
             ),
             foodItems: [],
-            onTap: () => print('Add lunch tapped'),
+            onTap: () => debugPrint('Add lunch tapped'),
           ),
           NutritionCard(
             type: NutritionCardType.mealSelector,
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 0,
             ),
             foodItems: [],
-            onTap: () => print('Add dinner tapped'),
+            onTap: () => debugPrint('Add dinner tapped'),
           ),
           NutritionCard(
             type: NutritionCardType.mealSelector,
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 0,
             ),
             foodItems: [],
-            onTap: () => print('Add snacks tapped'),
+            onTap: () => debugPrint('Add snacks tapped'),
           ),
         ],
       ),
