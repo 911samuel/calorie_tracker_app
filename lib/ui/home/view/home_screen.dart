@@ -1,11 +1,40 @@
+import 'package:calorie_tracker_app/ui/home/widget/date_picker_header.dart';
+import 'package:flutter/material.dart';
 import 'package:calorie_tracker_app/core/theme/app_theme.dart';
 import 'package:calorie_tracker_app/core/ui/nutrition_card.dart';
 import 'package:calorie_tracker_app/core/ui/nutrition_progress.dart';
 
-import 'package:flutter/material.dart';
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  DateTime selectedDate = DateTime.now();
+
+  void _incrementDate() {
+    setState(() => selectedDate = selectedDate.add(const Duration(days: 1)));
+  }
+
+  void _decrementDate() {
+    setState(
+      () => selectedDate = selectedDate.subtract(const Duration(days: 1)),
+    );
+  }
+
+  void _selectDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() => selectedDate = picked);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +46,7 @@ class HomeScreen extends StatelessWidget {
         carbs: 28,
         protein: 0,
         fat: 3,
-        imagePath: 'assets/apple_juice.png',
+        imagePath: 'assets/images/apple_juice.png',
       ),
       FoodItem(
         name: 'Cornflake Chocolate Chip',
@@ -26,95 +55,113 @@ class HomeScreen extends StatelessWidget {
         carbs: 78,
         protein: 8,
         fat: 18,
-        imagePath: 'assets/cornflake.png',
+        imagePath: 'assets/images/cornflake.png',
       ),
     ];
-    return MaterialApp(
-      title: 'Fitness Tracker',
-      theme: AppTheme.lightTheme,
-      home: Scaffold(
-        body: ListView(
-          children: [
-            NutritionCard(
-              type: NutritionCardType.mealSelector,
-              title: 'Breakfast',
-              icon: Icons.wb_sunny,
-              nutritionData: NutritionData(
-                calories: 637,
-                carbs: 106,
-                protein: 8,
-                fat: 21,
-              ),
-              foodItems: breakfastItems,
-              onTap: () {
-                // Handle add breakfast
-                print('Add breakfast tapped');
-              },
-              // onFoodItemRemoved: () {},
-            ),
-            NutritionCard(
-              type: NutritionCardType.mealSelector,
-              title: 'Breakfast',
-              icon: Icons.wb_sunny,
-              nutritionData: NutritionData(
-                calories: 637,
-                carbs: 106,
-                protein: 8,
-                fat: 21,
-              ),
-              foodItems: breakfastItems,
-              onTap: () {
-                // Handle add breakfast
-                print('Add breakfast tapped');
-              },
-              // onFoodItemRemoved: () {},
-            ),
 
-            // Input Field Card
-            NutritionCard(
-              type: NutritionCardType.inputField,
-              title: 'Instant noodle',
-              nutritionInfo: '230kcal / 100g',
-              nutritionData: NutritionData(
-                calories: 230,
-                carbs: 28,
-                protein: 5,
-                fat: 10,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor:
+            Colors.transparent, // important to allow our Container to show
+        elevation: 0,
+        toolbarHeight: 280,
+        flexibleSpace: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(40),
+            bottomRight: Radius.circular(40),
+          ),
+          child: Container(
+            color: AppTheme.lightTheme.primaryColor,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Single combined nutrition progress
+                    NutritionRingProgress(
+                      carbsValue: 117,
+                      carbsGoal: 150,
+                      proteinValue: 78,
+                      proteinGoal: 120,
+                      fatValue: 84,
+                      fatGoal: 100,
+                      totalCalories: 1512,
+                      totalGoal: 2203,
+                    ),
+                  ],
+                ),
               ),
-              inputHint: '0',
-              inputSuffix: 'g',
-              onInputChanged: (value) {
-                print('Input changed: $value');
-              },
-              onInputSubmitted: (value) {
-                print('Input submitted: $value');
-              },
             ),
-            NutritionRingProgress(
-              carbsValue: 117,
-              proteinValue: 78,
-              fatValue: 84,
-              carbsGoal: 150,
-              proteinGoal: 120,
-              fatGoal: 100,
-              totalCalories: 1512, // Current consumed
-              totalGoal: 2203, // Daily goal
-            ),
-
-            // Or let it auto-calculate from macros
-            NutritionRingProgress(
-              carbsValue: 117,
-              proteinValue: 78,
-              fatValue: 84,
-              carbsGoal: 150,
-              proteinGoal: 120,
-              fatGoal: 100,
-              // Will calculate: (117*4 + 78*4 + 84*9) = 1536 calories
-            ),
-          ],
+          ),
         ),
       ),
-      debugShowCheckedModeBanner: false,
+
+      body: ListView(
+        children: [
+             Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DatePickerHeader(
+              selectedDate: selectedDate,
+              onPrevious: _decrementDate,
+              onNext: _incrementDate,
+              onSelectDate: _selectDate,
+            ),
+          ),
+          NutritionCard(
+            type: NutritionCardType.mealSelector,
+            title: 'Breakfast',
+            icon: Icons.wb_sunny,
+            nutritionData: NutritionData(
+              calories: 637,
+              carbs: 106,
+              protein: 8,
+              fat: 21,
+            ),
+            foodItems: breakfastItems,
+            onTap: () => print('Add breakfast tapped'),
+          ),
+          NutritionCard(
+            type: NutritionCardType.mealSelector,
+            title: 'Lunch',
+            icon: Icons.lunch_dining,
+            nutritionData: NutritionData(
+              calories: 0,
+              carbs: 0,
+              protein: 0,
+              fat: 0,
+            ),
+            foodItems: [],
+            onTap: () => print('Add lunch tapped'),
+          ),
+          NutritionCard(
+            type: NutritionCardType.mealSelector,
+            title: 'Dinner',
+            icon: Icons.dinner_dining,
+            nutritionData: NutritionData(
+              calories: 0,
+              carbs: 0,
+              protein: 0,
+              fat: 0,
+            ),
+            foodItems: [],
+            onTap: () => print('Add dinner tapped'),
+          ),
+          NutritionCard(
+            type: NutritionCardType.mealSelector,
+            title: 'Snacks',
+            icon: Icons.cookie,
+            nutritionData: NutritionData(
+              calories: 0,
+              carbs: 0,
+              protein: 0,
+              fat: 0,
+            ),
+            foodItems: [],
+            onTap: () => print('Add snacks tapped'),
+          ),
+        ],
+      ),
     );
   }
 }

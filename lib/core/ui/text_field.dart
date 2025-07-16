@@ -18,7 +18,8 @@ class CustomTextField extends StatefulWidget {
   final bool enabled;
   final String? suffixText;
   final Color? suffixTextColor;
-  final Function(String)? onChanged; // Fixed this line
+  final Function(String)? onChanged;
+  final bool isOnboarding; // New parameter for onboarding style
 
   const CustomTextField({
     super.key,
@@ -36,7 +37,8 @@ class CustomTextField extends StatefulWidget {
     this.enabled = true,
     this.suffixText,
     this.suffixTextColor,
-    this.onChanged, // Fixed this line
+    this.onChanged,
+    this.isOnboarding = false, // Default to false
   });
 
   @override
@@ -48,6 +50,86 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isOnboarding) {
+      return _buildOnboardingStyle();
+    }
+    return _buildDefaultStyle();
+  }
+
+  Widget _buildOnboardingStyle() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 100,
+              child: Focus(
+                onFocusChange: (hasFocus) {
+                  setState(() {
+                    _isFocused = hasFocus;
+                  });
+                },
+                child: TextFormField(
+                  controller: widget.controller,
+                  validator: widget.validator,
+                  obscureText: widget.obscureText,
+                  keyboardType: widget.keyboardType,
+                  enabled: widget.enabled,
+                  onChanged: widget.onChanged,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Color(0xFF4CAF50),
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: widget.hintText,
+                    hintStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    filled: false,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 8,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (widget.suffixText != null) ...[
+              const SizedBox(width: 8),
+              Text(
+                widget.suffixText!,
+                style: TextStyle(
+                  color: widget.suffixTextColor ?? Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ],
+          ],
+        ),
+        if (widget.errorText != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            widget.errorText!,
+            style: const TextStyle(color: Colors.red, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildDefaultStyle() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,7 +156,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
             enabled: widget.enabled,
-            onChanged: widget.onChanged, // Added this line
+            onChanged: widget.onChanged,
             style: const TextStyle(color: AppColors.textBlack, fontSize: 16),
             decoration: InputDecoration(
               hintText: widget.hintText,
@@ -177,6 +259,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   Color _getSuffixTextColor() {
-    return _isFocused ? AppColors.primaryNeon : AppColors.textLightGray;
+    return _isFocused ? AppColors.primaryNeon : AppColors.textBlack;
   }
 }

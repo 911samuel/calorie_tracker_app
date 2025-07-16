@@ -7,24 +7,40 @@ class WeightStep extends ConsumerWidget {
   final VoidCallback onNext;
   final TextEditingController weightController;
 
-  const WeightStep({super.key, required this.onNext, required this.weightController});
+  const WeightStep({
+    super.key,
+    required this.onNext,
+    required this.weightController,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("What's your weight?"),
-        const SizedBox(height: 24),
+        const Text(
+          "What's your weight?",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 40),
         CustomTextField(
           controller: weightController,
           keyboardType: TextInputType.number,
+          hintText: "70.0",
           suffixText: "kg",
+          suffixTextColor: Colors.grey,
+          isOnboarding: true, // Enable onboarding style
           onChanged: (value) {
             final doubleWeight = double.tryParse(value);
             if (doubleWeight != null) {
-              ref.read(onboardingViewModelProvider.notifier).updateWeight(doubleWeight);
+              ref
+                  .read(onboardingViewModelProvider.notifier)
+                  .updateWeight(doubleWeight);
             }
           },
         ),

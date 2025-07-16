@@ -131,6 +131,7 @@ class ToggleButtonGroup extends StatefulWidget {
   final Function(int)? onSelectionChanged;
   final ButtonVariant variant;
   final double spacing;
+  final double? width; // new
 
   const ToggleButtonGroup({
     super.key,
@@ -139,6 +140,7 @@ class ToggleButtonGroup extends StatefulWidget {
     this.onSelectionChanged,
     this.variant = ButtonVariant.primary,
     this.spacing = 7,
+    this.width,
   });
 
   @override
@@ -156,31 +158,32 @@ class _ToggleButtonGroupState extends State<ToggleButtonGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    Widget content = Wrap(
+      spacing: widget.spacing,
       children: widget.options.asMap().entries.map((entry) {
         final index = entry.key;
         final option = entry.value;
         final isSelected = _selectedIndex == index;
 
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-              right: index < widget.options.length - 1 ? widget.spacing : 0,
-            ),
-            child: CustomButton(
-              text: option,
-              isSelected: isSelected,
-              variant: widget.variant,
-              onPressed: () {
-                setState(() {
-                  _selectedIndex = index;
-                });
-                widget.onSelectionChanged?.call(index);
-              },
-            ),
-          ),
+        return CustomButton(
+          text: option,
+          isSelected: isSelected,
+          variant: widget.variant,
+          onPressed: () {
+            setState(() {
+              _selectedIndex = index;
+            });
+            widget.onSelectionChanged?.call(index);
+          },
         );
       }).toList(),
     );
+
+    // Apply width constraint if provided
+    if (widget.width != null) {
+      content = SizedBox(width: widget.width, child: content);
+    }
+
+    return content;
   }
 }

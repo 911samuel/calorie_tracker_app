@@ -28,8 +28,9 @@ class NutrientGoalsStep extends ConsumerWidget {
         CustomTextField(
           controller: carbsController,
           keyboardType: TextInputType.number,
-          suffixText: "%",
-          label: "Carbs",
+          suffixText: "%carbs",
+          hintText: '90',
+          isOnboarding: true,
           onChanged: (value) {
             final val = double.tryParse(value);
             if (val != null) {
@@ -41,8 +42,9 @@ class NutrientGoalsStep extends ConsumerWidget {
         CustomTextField(
           controller: proteinController,
           keyboardType: TextInputType.number,
-          suffixText: "%",
-          label: "Proteins",
+          suffixText: "%proteins",
+          hintText: '70',
+          isOnboarding: true,
           onChanged: (value) {
             final val = double.tryParse(value);
             if (val != null) {
@@ -54,8 +56,9 @@ class NutrientGoalsStep extends ConsumerWidget {
         CustomTextField(
           controller: fatController,
           keyboardType: TextInputType.number,
-          suffixText: "%",
-          label: "Fats",
+          suffixText: "%fats",
+          hintText: '80',
+          isOnboarding: true,
           onChanged: (value) {
             final val = double.tryParse(value);
             if (val != null) {

@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/core/ui/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calorie_tracker_app/core/ui/button.dart';
@@ -16,7 +17,9 @@ class GenderStep extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("What is your gender?"),
+        CustomText(
+          label: "What's your gender?",
+        ),
         const SizedBox(height: 24),
         ToggleButtonGroup(
           options: const ['Male', 'Female'],

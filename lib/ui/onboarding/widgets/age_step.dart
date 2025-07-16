@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/core/ui/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calorie_tracker_app/core/ui/text_field.dart';
@@ -11,16 +12,18 @@ class AgeStep extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("What's your age?"),
-        const SizedBox(height: 24),
+        CustomText(label: "What's your age"),
+        const SizedBox(height: 40),
         CustomTextField(
           controller: ageController,
           keyboardType: TextInputType.number,
-          suffixText: "Years",
+          hintText: "25",
+          suffixText: "years",
+          suffixTextColor: Colors.grey,
+          isOnboarding: true, // Enable onboarding style
           onChanged: (value) {
             final intAge = int.tryParse(value);
             if (intAge != null) {

@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/core/ui/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_tracker_app/core/ui/button.dart';
 
@@ -11,11 +12,13 @@ class WelcomeStep extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Hello! Let's find out more about you :)"),
+        CustomText(label: "Hello! Let's find out more about you :)", fontSize: 26, textAlign: TextAlign.center,),
         const SizedBox(height: 24),
         CustomButton(
           text: "Let's go",
           onPressed: onNext,
+          variant: ButtonVariant.primary,
+          isSelected: true,
         ),
       ],
     );
