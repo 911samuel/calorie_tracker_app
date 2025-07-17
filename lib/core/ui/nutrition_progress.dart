@@ -1,6 +1,6 @@
 import 'package:calorie_tracker_app/core/theme/app_colors.dart';
 import 'package:calorie_tracker_app/core/ui/custom_text.dart';
-import 'package:calorie_tracker_app/core/ui/ring_progress.dart';
+import 'package:calorie_tracker_app/core/ui/nutrition_ring.dart';
 import 'package:flutter/material.dart';
 
 class NutritionRingProgress extends StatelessWidget {
@@ -144,7 +144,7 @@ class NutritionRingProgress extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Carbs
-            _buildNutritionRing(
+            NutritionRing(
               value: carbsValue,
               goal: carbsGoal,
               label: 'Carbs',
@@ -152,7 +152,7 @@ class NutritionRingProgress extends StatelessWidget {
               backgroundColor: AppColors.carbsBackground,
             ),
             // Protein
-            _buildNutritionRing(
+            NutritionRing(
               value: proteinValue,
               goal: proteinGoal,
               label: 'Protein',
@@ -160,7 +160,7 @@ class NutritionRingProgress extends StatelessWidget {
               backgroundColor: AppColors.proteinBackground,
             ),
             // Fat
-            _buildNutritionRing(
+            NutritionRing(
               value: fatValue,
               goal: fatGoal,
               label: 'Fat',
