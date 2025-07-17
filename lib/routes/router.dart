@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/ui/food_search/view/food_search_screen.dart';
 import 'package:calorie_tracker_app/ui/home/view/home_screen.dart';
 import 'package:calorie_tracker_app/ui/onboarding/view/onborading.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,12 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case AppRoutes.home:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
+      case AppRoutes.foodSearch:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final mealType = args?['mealType'] ?? 'Meal';
+        return MaterialPageRoute(
+          builder: (_) => FoodSearchScreen(title: 'Add $mealType'),
+        );
 
       default:
         return MaterialPageRoute(

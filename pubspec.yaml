@@ -21,6 +21,7 @@ dependencies:
   dio: ^5.8.0+1
   flutter_dotenv: ^5.2.1
   provider: ^6.1.5
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/images/apple_juice.png
+    - assets/images/cornflake.jpg
     - assets/images/logo.png
     - .env
 
