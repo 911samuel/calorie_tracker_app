@@ -654,17 +654,29 @@ class _NutritionCardState extends State<NutritionCard> {
 
   // Helper method to build consistent food images
   Widget _buildFoodImage(String? imagePath, double size) {
+    debugPrint("Image: $imagePath");
+
+    ImageProvider? imageProvider;
+
+    if (imagePath != null && imagePath.isNotEmpty) {
+      if (imagePath.startsWith('http') || imagePath.startsWith('https')) {
+        imageProvider = NetworkImage(imagePath);
+      } else {
+        imageProvider = AssetImage(imagePath);
+      }
+    }
+
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: imagePath == null ? AppColors.disabled : null,
-        image: imagePath != null
-            ? DecorationImage(image: NetworkImage(imagePath), fit: BoxFit.cover)
+        color: imageProvider == null ? AppColors.disabled : Colors.transparent,
+        image: imageProvider != null
+            ? DecorationImage(image: imageProvider, fit: BoxFit.cover)
             : null,
       ),
-      child: imagePath == null
+      child: imageProvider == null
           ? const Icon(Icons.fastfood, color: AppColors.textGray)
           : null,
     );

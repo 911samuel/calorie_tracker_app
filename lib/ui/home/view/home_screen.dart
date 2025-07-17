@@ -131,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
           NutritionCard(
             type: NutritionCardType.mealSelector,
             title: 'Breakfast',
-            icon: Icons.wb_sunny,
             imagePath: 'assets/images/breakfast.jpg',
             nutritionData: NutritionData(
               calories: 637,
@@ -146,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NutritionCard(
             type: NutritionCardType.mealSelector,
             title: 'Lunch',
-            icon: Icons.lunch_dining,
+            imagePath: 'assets/images/lunch.jpg',
             nutritionData: NutritionData(
               calories: 0,
               carbs: 0,
@@ -159,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NutritionCard(
             type: NutritionCardType.mealSelector,
             title: 'Dinner',
-            icon: Icons.dinner_dining,
+            imagePath: 'assets/images/dinner.jpg',
             nutritionData: NutritionData(
               calories: 0,
               carbs: 0,
@@ -172,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NutritionCard(
             type: NutritionCardType.mealSelector,
             title: 'Snacks',
-            icon: Icons.cookie,
+            imagePath: 'assets/images/snack.jpg',
             nutritionData: NutritionData(
               calories: 0,
               carbs: 0,
