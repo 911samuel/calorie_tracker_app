@@ -21,6 +21,23 @@ class DBHelper {
     Directory dir = await getApplicationDocumentsDirectory();
     String path = join(dir.path, "app.db");
 
-    return await openDatabase(path, version: 1);
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
+  }
+
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE tracked_foods (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        amount REAL NOT NULL,
+        calories INTEGER NOT NULL,
+        protein REAL NOT NULL,
+        carbs REAL NOT NULL,
+        fat REAL NOT NULL,
+        date TEXT NOT NULL,
+        mealType TEXT NOT NULL,
+        imageUrl TEXT
+      )
+    ''');
   }
 }

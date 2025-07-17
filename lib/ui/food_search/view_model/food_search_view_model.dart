@@ -1,5 +1,5 @@
 import 'package:calorie_tracker_app/data/repository/food_repository.dart';
-import 'package:calorie_tracker_app/domain/food.dart';
+import 'package:calorie_tracker_app/domain/models/food.dart';
 import 'package:calorie_tracker_app/config/service_locator.dart';
 import 'package:flutter/material.dart';
 

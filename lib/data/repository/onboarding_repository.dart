@@ -1,4 +1,4 @@
-import '../../domain/user.dart';
+import '../../domain/models/user.dart';
 import '../services/shared_prefs_service.dart';
 
 class OnboardingRepository {

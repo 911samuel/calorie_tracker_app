@@ -1,5 +1,5 @@
 import 'package:calorie_tracker_app/data/services/food_api_service.dart';
-import 'package:calorie_tracker_app/domain/food.dart';
+import 'package:calorie_tracker_app/domain/models/food.dart';
 
 abstract class IFoodRepository {
   Future<List<Food>> searchFoods({

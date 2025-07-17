@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calorie_tracker_app/core/ui/button.dart';
 import 'package:calorie_tracker_app/ui/onboarding/view_model/onboarding_view_model.dart';
-import 'package:calorie_tracker_app/domain/user.dart';
+import 'package:calorie_tracker_app/domain/models/user.dart';
 
 class ActivityLevelStep extends ConsumerWidget {
   final VoidCallback onNext;

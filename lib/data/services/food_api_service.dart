@@ -1,7 +1,8 @@
 import 'package:calorie_tracker_app/config/api_config.dart';
-import 'package:calorie_tracker_app/domain/food.dart';
-import 'package:calorie_tracker_app/domain/food_api_models.dart';
+import 'package:calorie_tracker_app/domain/models/food.dart';
+import 'package:calorie_tracker_app/domain/models/food_api_models.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 abstract class IFoodApiService {
   Future<List<Food>> searchFoods({
@@ -91,7 +92,7 @@ class FoodApiService implements IFoodApiService {
         page: page,
         pageSize: pageSize ?? _config.defaultPageSize,
       );
-
+      debugPrint("Query params=== $queryParameters ");
       final response = await _httpClient.get(
         '${_config.baseUrl}${_config.endpoint}',
         queryParameters: queryParameters,
@@ -105,8 +106,10 @@ class FoodApiService implements IFoodApiService {
       }
 
       final apiResponse = FoodApiResponse.fromJson(response.data);
+
       return _mapper.mapToFoodList(apiResponse.products);
     } on DioException catch (e) {
+      debugPrint('Errorr here: $e');
       throw _handleDioException(e);
     } on FoodApiException {
       rethrow;

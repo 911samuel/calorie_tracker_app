@@ -313,7 +313,7 @@ class _NutritionCardState extends State<NutritionCard> {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                _buildMealIcon(),
+                _buildFoodImage(widget.imagePath, 80),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

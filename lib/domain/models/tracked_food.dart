@@ -1,5 +1,7 @@
+import 'package:calorie_tracker_app/domain/models/food.dart';
+
 class TrackedFood {
-  final int? id; // optional, since it will be auto-generated in SQLite
+  final int? id;
   final String name;
   final double amount; // in grams
   final int calories;
@@ -7,7 +9,7 @@ class TrackedFood {
   final double carbs;
   final double fat;
   final DateTime date;
-  final String mealType; // breakfast, lunch, etc.
+  final String mealType;
   final String? imageUrl;
 
   TrackedFood({
@@ -50,6 +52,27 @@ class TrackedFood {
       date: DateTime.parse(map['date']),
       mealType: map['mealType'],
       imageUrl: map['imageUrl'],
+    );
+  }
+
+  // Helper method to calculate nutritional values based on amount
+  static TrackedFood fromFood(
+    Food food,
+    double amount,
+    DateTime date,
+    String mealType,
+  ) {
+    final ratio = amount / 100; // Convert from per 100g to actual amount
+    return TrackedFood(
+      name: food.name,
+      amount: amount,
+      calories: (food.caloriesPer100g * ratio).round(),
+      protein: food.proteinPer100g * ratio,
+      carbs: food.carbsPer100g * ratio,
+      fat: food.fatPer100g * ratio,
+      date: date,
+      mealType: mealType,
+      imageUrl: food.imageUrl,
     );
   }
 }

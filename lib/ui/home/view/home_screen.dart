@@ -1,3 +1,6 @@
+import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
+import 'package:calorie_tracker_app/domain/models/user.dart';
+import 'package:calorie_tracker_app/domain/use_cases/calculate_nutrients_usecase.dart';
 import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:calorie_tracker_app/ui/home/widget/date_picker_header.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,34 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
+  User? _user;
+  NutrientGoalResult? _nutrientGoalResult;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final sharedPrefsService = SharedPrefsService();
+    final user = await sharedPrefsService.loadUser();
+
+    final calculateMealNutrients = CalculateMealNutrients(sharedPrefsService);
+    final result = await calculateMealNutrients();
+
+    setState(() {
+      _user = user;
+      _nutrientGoalResult = result;
+    });
+
+    if (result != null) {
+      debugPrint('Calories Goal: ${result.caloriesGoal}');
+      debugPrint('Carbs Goal: ${result.carbsGoal}');
+      debugPrint('Protein Goal: ${result.proteinGoal}');
+      debugPrint('Fat Goal: ${result.fatGoal}');
+    }
+  }
 
   void _incrementDate() {
     setState(() => selectedDate = selectedDate.add(const Duration(days: 1)));
@@ -47,8 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -77,7 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       fatValue: 84,
                       fatGoal: 100,
                       totalCalories: 1512,
-                      totalGoal: 2203,
+                      totalGoal: (_nutrientGoalResult?.caloriesGoal ?? 0)
+                          .toDouble(),
                     ),
                   ],
                 ),
@@ -102,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
             type: NutritionCardType.mealSelector,
             title: 'Breakfast',
             icon: Icons.wb_sunny,
+            imagePath: 'assets/images/breakfast.jpg',
             nutritionData: NutritionData(
               calories: 637,
               carbs: 106,

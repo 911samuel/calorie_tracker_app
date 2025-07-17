@@ -34,6 +34,10 @@ flutter:
     - assets/images/apple_juice.png
     - assets/images/cornflake.jpg
     - assets/images/logo.png
+    - assets/images/breakfast.jpg
+    - assets/images/lunch.jpg
+    - assets/images/snack.jpg
+    - assets/images/dinner.jpg
     - .env
 
 flutter_native_splash:
