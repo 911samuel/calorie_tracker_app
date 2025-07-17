@@ -1,11 +1,13 @@
 import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
+import 'package:calorie_tracker_app/domain/models/enums/nutrition_card_types.dart';
+import 'package:calorie_tracker_app/domain/models/nutrition_data.dart';
 import 'package:calorie_tracker_app/domain/models/user.dart';
 import 'package:calorie_tracker_app/domain/use_cases/calculate_nutrients_usecase.dart';
 import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:calorie_tracker_app/ui/home/widget/date_picker_header.dart';
+import 'package:calorie_tracker_app/ui/home/widget/nutrition_card.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_tracker_app/core/theme/app_theme.dart';
-import 'package:calorie_tracker_app/core/ui/nutrition_card.dart';
 import 'package:calorie_tracker_app/core/ui/nutrition_progress.dart';
 
 class HomeScreen extends StatefulWidget {

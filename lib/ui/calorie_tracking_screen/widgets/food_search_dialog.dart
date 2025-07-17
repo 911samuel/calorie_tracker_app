@@ -126,7 +126,9 @@ class _FoodSearchDialogState extends State<FoodSearchDialog> {
               final amount = double.tryParse(_amountController.text);
               if (amount != null && amount > 0) {
                 await widget.viewModel.addFoodToMeal(food, amount);
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(); // Close amount dialog
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(); // Close search dialog
               }
             },

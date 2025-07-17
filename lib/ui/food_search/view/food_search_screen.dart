@@ -1,7 +1,9 @@
 import 'package:calorie_tracker_app/core/ui/custom_text.dart';
-import 'package:calorie_tracker_app/core/ui/nutrition_card.dart';
+import 'package:calorie_tracker_app/domain/models/enums/nutrition_card_types.dart';
+import 'package:calorie_tracker_app/domain/models/nutrition_data.dart';
 import 'package:calorie_tracker_app/ui/food_search/view_model/food_search_view_model.dart';
 import 'package:calorie_tracker_app/ui/food_search/widget/food_search_search_bar.dart';
+import 'package:calorie_tracker_app/ui/home/widget/nutrition_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,9 +47,7 @@ class FoodSearchScreen extends StatelessWidget {
 
 Widget _buildBody(FoodSearchViewModel viewModel, BuildContext context) {
   if (viewModel.isLoading) {
-    return const Center(
-      child: CircularProgressIndicator(color: Colors.green),
-    );
+    return const Center(child: CircularProgressIndicator(color: Colors.green));
   }
 
   if (viewModel.errorMessage != null) {
@@ -94,20 +94,20 @@ Widget _buildBody(FoodSearchViewModel viewModel, BuildContext context) {
   );
 }
 
-  Widget _buildFoodCard(dynamic food, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: NutritionCard(
-        type: NutritionCardType.searchResult,
-        title: food.name,
-        imagePath: food.imageUrl,
-        nutritionData: NutritionData(
-          calories: food.caloriesPer100g,
-          carbs: food.carbsPer100g,
-          protein: food.proteinPer100g,
-          fat: food.fatPer100g,
-          weight: null,
-        ),
+Widget _buildFoodCard(dynamic food, BuildContext context) {
+  return Container(
+    margin: const EdgeInsets.only(bottom: 8),
+    child: NutritionCard(
+      type: NutritionCardType.searchResult,
+      title: food.name,
+      imagePath: food.imageUrl,
+      nutritionData: NutritionData(
+        calories: food.caloriesPer100g,
+        carbs: food.carbsPer100g,
+        protein: food.proteinPer100g,
+        fat: food.fatPer100g,
+        weight: null,
       ),
-    );
-  }
+    ),
+  );
+}
