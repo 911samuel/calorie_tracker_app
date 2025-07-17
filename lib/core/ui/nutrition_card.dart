@@ -1,6 +1,7 @@
 import 'package:calorie_tracker_app/core/theme/app_colors.dart';
 import 'package:calorie_tracker_app/core/ui/button.dart';
-import 'package:calorie_tracker_app/core/ui/text_field.dart';
+import 'package:calorie_tracker_app/core/ui/custom_text.dart';
+import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 enum NutritionCardType {
@@ -8,6 +9,7 @@ enum NutritionCardType {
   foodItem, // Individual food items with remove option
   addButton, // Add new item button
   inputField, // For manual nutrition input
+  searchResult, // New type for search results like in the image
 }
 
 class NutritionData {
@@ -57,6 +59,7 @@ class NutritionCard extends StatefulWidget {
   final VoidCallback? onRemove;
   final Function(String)? onInputChanged;
   final Function(String)? onInputSubmitted;
+  final Function()? onSave; // New callback for save action
   final bool isExpanded;
   final List<String>? dropdownItems;
   final List<FoodItem>? foodItems;
@@ -65,6 +68,7 @@ class NutritionCard extends StatefulWidget {
   final String? inputHint;
   final String? inputSuffix;
   final String? nutritionInfo;
+  final String? caloriesPerServing; // New field for calories per serving
 
   const NutritionCard({
     super.key,
@@ -78,6 +82,7 @@ class NutritionCard extends StatefulWidget {
     this.onRemove,
     this.onInputChanged,
     this.onInputSubmitted,
+    this.onSave,
     this.isExpanded = false,
     this.dropdownItems,
     this.foodItems,
@@ -86,6 +91,7 @@ class NutritionCard extends StatefulWidget {
     this.inputHint,
     this.inputSuffix,
     this.nutritionInfo,
+    this.caloriesPerServing,
   });
 
   @override
@@ -138,7 +144,159 @@ class _NutritionCardState extends State<NutritionCard> {
         return _buildAddButtonCard();
       case NutritionCardType.inputField:
         return _buildInputFieldCard();
+      case NutritionCardType.searchResult:
+        return _buildSearchResultCard();
     }
+  }
+
+  Widget _buildSearchResultCard() {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              _showInputField = !_showInputField;
+            });
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Food image
+                _buildFoodImage(widget.imagePath, 60),
+                const SizedBox(width: 16),
+                // Main content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Food name
+                      Text(
+                        widget.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textBlack,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      // Weight and calories row
+                      if (widget.nutritionData != null)
+                        Row(
+                          children: [
+                            Text(
+                              widget.nutritionData!.weight ?? '',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textGray,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${widget.nutritionData!.calories}kcal',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textBlack,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text(
+                              '/ 100g',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textGray,
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 8),
+                      // Nutrition info row with labels below values
+                      if (widget.nutritionData != null)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  '${widget.nutritionData!.carbs.toInt()}g',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textBlack,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                const Text(
+                                  'Carbs',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textGray,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  '${widget.nutritionData!.protein.toInt()}g',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textBlack,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                const Text(
+                                  'Protein',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textGray,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  '${widget.nutritionData!.fat.toInt()}g',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textBlack,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                const Text(
+                                  'Fat',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textGray,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (_showInputField) ...[
+          const Divider(height: 1, color: AppColors.disabled),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _buildInputRow(context),
+          ),
+        ],
+      ],
+    );
   }
 
   Widget _buildMealSelectorCard() {
@@ -211,6 +369,35 @@ class _NutritionCardState extends State<NutritionCard> {
           const Divider(height: 1, color: AppColors.disabled),
           _buildExpandedContent(),
         ],
+      ],
+    );
+  }
+
+  Widget _buildMealIcon() {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        widget.icon ?? Icons.restaurant,
+        color: AppColors.lightBackground,
+        size: 20,
+      ),
+    );
+  }
+
+  Widget _buildNutritionSummaryRow() {
+    final nutrition = widget.nutritionData!;
+    return Row(
+      children: [
+        _buildSmallNutritionItem('${nutrition.carbs.toInt()}g', 'Carbs'),
+        const SizedBox(width: 8),
+        _buildSmallNutritionItem('${nutrition.protein.toInt()}g', 'Protein'),
+        const SizedBox(width: 8),
+        _buildSmallNutritionItem('${nutrition.fat.toInt()}g', 'Fat'),
       ],
     );
   }
@@ -474,7 +661,7 @@ class _NutritionCardState extends State<NutritionCard> {
         borderRadius: BorderRadius.circular(8),
         color: imagePath == null ? AppColors.disabled : null,
         image: imagePath != null
-            ? DecorationImage(image: AssetImage(imagePath), fit: BoxFit.cover)
+            ? DecorationImage(image: NetworkImage(imagePath), fit: BoxFit.cover)
             : null,
       ),
       child: imagePath == null
@@ -498,69 +685,72 @@ class _NutritionCardState extends State<NutritionCard> {
 
   // Updated input row using CustomTextField
   Widget _buildInputRow(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: CustomTextField(
-            controller: _controller,
-            hintText: widget.inputHint ?? 'Enter amount',
-            keyboardType: TextInputType.number,
-            suffixText: widget.inputSuffix ?? 'g',
-            suffixTextColor: AppColors.textGray,
-            onChanged: (value) => widget.onInputChanged?.call(value),
-            // onSubmitted: (value) {
-            //   widget.onInputSubmitted?.call(value);
-            //   setState(() {
-            //     _showInputField = false;
-            //   });
-            // },
-          ),
-        ),
-        const SizedBox(width: 12),
-        CustomButton(
-          text: '',
-          icon: Icons.check,
-          variant: ButtonVariant.primary,
-          width: 44,
-          height: 44,
-          borderRadius: 8,
-          onPressed: () {
-            widget.onInputSubmitted?.call(_controller.text);
-            setState(() {
-              _showInputField = false;
-            });
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMealIcon() {
     return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Icon(
-        widget.icon ?? Icons.restaurant,
-        color: AppColors.lightBackground,
-        size: 20,
-      ),
-    );
-  }
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  IntrinsicWidth(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: 120,
+                      ), // adjust as needed
+                      child: TextField(
+                        controller: _controller,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: AppColors.textLightGray,
+                              width: 1,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: AppColors.primaryNeon,
+                              width: 1,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                        ),
+                        onChanged: widget.onInputChanged,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 4),
+                    child: CustomText(label: 'g'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          IconButton(
+            icon: Icon(Icons.check, color: AppColors.primaryNeon),
+            onPressed: () {
+              widget.onInputSubmitted?.call(_controller.text);
+              widget.onSave?.call();
 
-  Widget _buildNutritionSummaryRow() {
-    final nutrition = widget.nutritionData!;
-    return Row(
-      children: [
-        _buildSmallNutritionItem('${nutrition.carbs.toInt()}g', 'Carbs'),
-        const SizedBox(width: 8),
-        _buildSmallNutritionItem('${nutrition.protein.toInt()}g', 'Protein'),
-        const SizedBox(width: 8),
-        _buildSmallNutritionItem('${nutrition.fat.toInt()}g', 'Fat'),
-      ],
+              // Navigate back to home
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+            },
+          ),
+        ],
+      ),
     );
   }
 

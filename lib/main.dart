@@ -1,4 +1,6 @@
+import 'package:calorie_tracker_app/config/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'routes/router.dart';
@@ -12,6 +14,8 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   FlutterNativeSplash.remove();
+  await dotenv.load(fileName: '.env');
+  setupServiceLocator();
   runApp(const ProviderScope(child: CalorieTrackerApp()));
 }
 

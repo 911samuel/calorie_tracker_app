@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:calorie_tracker_app/ui/home/widget/date_picker_header.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_tracker_app/core/theme/app_theme.dart';
@@ -36,28 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _addFood(String mealType) {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.foodSearch,
+      arguments: {'mealType': mealType},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<FoodItem> breakfastItems = [
-      FoodItem(
-        name: 'Apple Juice',
-        weight: '250g',
-        calories: 115,
-        carbs: 28,
-        protein: 0,
-        fat: 3,
-        imagePath: 'assets/images/apple_juice.png',
-      ),
-      FoodItem(
-        name: 'Cornflake Chocolate Chip',
-        weight: '120g',
-        calories: 522,
-        carbs: 78,
-        protein: 8,
-        fat: 18,
-        imagePath: 'assets/images/cornflake.png',
-      ),
-    ];
+
 
     return Scaffold(
       appBar: AppBar(
@@ -117,9 +107,10 @@ class _HomeScreenState extends State<HomeScreen> {
               carbs: 106,
               protein: 8,
               fat: 21,
+              weight: '400g',
             ),
-            foodItems: breakfastItems,
-            onTap: () => debugPrint('Add breakfast tapped'),
+            foodItems: [],
+            onTap: () => _addFood('Breakfast'),
           ),
           NutritionCard(
             type: NutritionCardType.mealSelector,
@@ -132,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 0,
             ),
             foodItems: [],
-            onTap: () => debugPrint('Add lunch tapped'),
+            onTap: () => _addFood('Lunch'),
           ),
           NutritionCard(
             type: NutritionCardType.mealSelector,
@@ -145,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 0,
             ),
             foodItems: [],
-            onTap: () => debugPrint('Add dinner tapped'),
+            onTap: () => _addFood('Dinner'),
           ),
           NutritionCard(
             type: NutritionCardType.mealSelector,
@@ -158,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fat: 0,
             ),
             foodItems: [],
-            onTap: () => debugPrint('Add snacks tapped'),
+            onTap: () => _addFood('Snacks'),
           ),
         ],
       ),
