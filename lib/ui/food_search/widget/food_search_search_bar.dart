@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class FoodSearchSearchBar extends StatelessWidget {
@@ -14,13 +15,15 @@ class FoodSearchSearchBar extends StatelessWidget {
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
           hintText: 'Search for foods...',
-          hintStyle: TextStyle(color: Colors.grey[600]),
-          suffixIcon: Icon(Icons.search, color: Colors.grey[600]),
-          filled: true,
-          fillColor: Colors.grey[100],
+          hintStyle: TextStyle(color: AppColors.textLightGray),
+          suffixIcon: Icon(Icons.search, color: AppColors.textLightGray),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(color: AppColors.textLightGray),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: AppColors.primaryNeon),
           ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,

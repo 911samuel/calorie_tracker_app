@@ -707,7 +707,14 @@ class _NutritionCardState extends State<NutritionCard> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: const BorderSide(
-                              color: Colors.grey,
+                              color: AppColors.textLightGray,
+                              width: 1,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                              color: AppColors.primaryNeon,
                               width: 1,
                             ),
                           ),
@@ -720,7 +727,7 @@ class _NutritionCardState extends State<NutritionCard> {
                       ),
                     ),
                   ),
-
+                  const SizedBox(width: 8),
                   const Padding(
                     padding: EdgeInsets.only(right: 4),
                     child: CustomText(label: 'g'),
@@ -731,7 +738,7 @@ class _NutritionCardState extends State<NutritionCard> {
           ),
           const SizedBox(width: 12),
           IconButton(
-            icon: Icon(Icons.check, color: Theme.of(context).primaryColor),
+            icon: Icon(Icons.check, color: AppColors.primaryNeon),
             onPressed: () {
               widget.onInputSubmitted?.call(_controller.text);
               widget.onSave?.call();
@@ -746,7 +753,6 @@ class _NutritionCardState extends State<NutritionCard> {
       ),
     );
   }
-
 
   Widget _buildNutritionItem(String value, String label) {
     return Column(
