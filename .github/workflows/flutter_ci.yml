@@ -2,9 +2,9 @@ name: Track Fit CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   push:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.32.6'
 
       - name: Install dependencies
         run: flutter pub get
@@ -39,7 +39,7 @@ jobs:
             echo "Test coverage ($COVERAGE%) is below 50%. PR cannot be merged."
             exit 1
           fi
-          echo "Test coverage is $COVERAGE% (>= 0%)"
+          echo "Test coverage is $COVERAGE% (>= 50%)"
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
