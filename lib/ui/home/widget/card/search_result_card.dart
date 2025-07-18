@@ -181,10 +181,6 @@ class _SearchResultCardState extends State<SearchResultCard> {
                       ],
                     ),
                   ),
-                  Icon(
-                    _showInputField ? Icons.keyboard_arrow_up : Icons.add,
-                    color: AppColors.textGray,
-                  ),
                 ],
               ),
             ),

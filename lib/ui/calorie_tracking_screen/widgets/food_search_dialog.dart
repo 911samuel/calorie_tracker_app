@@ -70,7 +70,6 @@ class _FoodSearchDialogState extends State<FoodSearchDialog> {
   }
 
   Widget _buildFoodSearchItem(Food food) {
-    debugPrint('Searched food$food');
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
