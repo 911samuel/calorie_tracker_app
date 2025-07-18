@@ -39,6 +39,13 @@ class FoodApiResponse {
 
 // Product DTO for API response
 class ProductDto {
+  Map<String, dynamic> toJson() {
+    return {
+      'product_name': productName,
+      'image_front_thumb_url': imageFrontThumbUrl,
+      'nutriments': nutriments?.toJson(),
+    };
+  }
   final String? productName;
   final String? imageFrontThumbUrl;
   final NutrimentsDto? nutriments;
@@ -62,6 +69,14 @@ class ProductDto {
 
 // Nutriments DTO
 class NutrimentsDto {
+  Map<String, dynamic> toJson() {
+    return {
+      'energy-kcal_100g': energyKcal100g,
+      'proteins_100g': proteins100g,
+      'carbohydrates_100g': carbohydrates100g,
+      'fat_100g': fat100g,
+    };
+  }
   final double? energyKcal100g;
   final double? proteins100g;
   final double? carbohydrates100g;
