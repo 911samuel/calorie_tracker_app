@@ -81,7 +81,6 @@ class CalorieTrackingViewModel extends ChangeNotifier {
   Future<void> addFoodToMeal(Food food, double amount) async {
     _setLoading(true);
     try {
-      final user = await _sharedPrefsService.loadUser();
       await _useCase.addFoodToMeal(
         food: food,
         amount: amount,
@@ -153,8 +152,4 @@ class CalorieTrackingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

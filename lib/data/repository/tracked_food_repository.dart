@@ -2,7 +2,6 @@ import 'package:calorie_tracker_app/data/services/tracked_food_service.dart';
 import 'package:calorie_tracker_app/domain/models/daily_summary.dart';
 import 'package:calorie_tracker_app/domain/models/meal_summary.dart';
 import 'package:calorie_tracker_app/domain/models/tracked_food.dart';
-import 'package:flutter/material.dart';
 
 abstract class ITrackedFoodRepository {
   Future<void> addTrackedFood(TrackedFood food);

@@ -9,13 +9,13 @@ class NutritionProgressWidget extends StatelessWidget {
   final double targetFat;
 
   const NutritionProgressWidget({
-    Key? key,
+    super.key,
     required this.dailySummary,
     this.targetCalories = 2000,
     this.targetProtein = 150.0,
     this.targetCarbs = 250.0,
     this.targetFat = 65.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

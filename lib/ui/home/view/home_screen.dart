@@ -1,7 +1,6 @@
 import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
 import 'package:calorie_tracker_app/domain/models/enums/nutrition_card_types.dart';
 import 'package:calorie_tracker_app/domain/models/nutrition_data.dart';
-import 'package:calorie_tracker_app/domain/models/user.dart';
 import 'package:calorie_tracker_app/domain/use_cases/calculate_nutrients_usecase.dart';
 import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:calorie_tracker_app/ui/calorie_tracking_screen/calorie_tracking_provider.dart';
@@ -22,7 +21,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   DateTime selectedDate = DateTime.now();
-  User? _user;
   NutrientGoalResult? _nutrientGoalResult;
 
   @override
@@ -37,12 +35,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _loadUserData() async {
     final sharedPrefsService = SharedPrefsService();
-    final user = await sharedPrefsService.loadUser();
     final calculateMealNutrients = CalculateMealNutrients(sharedPrefsService);
     final result = await calculateMealNutrients();
     if (mounted) {
       setState(() {
-        _user = user;
         _nutrientGoalResult = result;
       });
     }
