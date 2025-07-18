@@ -172,45 +172,4 @@ class NutritionRingProgress extends StatelessWidget {
       ],
     );
   }
-
-  Widget _buildNutritionRing({
-    required double value,
-    required double goal,
-    required String label,
-    required Color color,
-    required Color backgroundColor,
-  }) {
-    final progress = (value / goal).clamp(0.0, 1.0);
-    return Column(
-      children: [
-        RingProgressBar(
-          progress: progress,
-          size: 80,
-          strokeWidth: 6,
-          progressColor: color,
-          backgroundColor: backgroundColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${value.toInt()} g',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.cardWhite,
-                ),
-              ),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.cardWhite,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
