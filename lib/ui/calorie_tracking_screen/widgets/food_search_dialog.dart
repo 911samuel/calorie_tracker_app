@@ -1,7 +1,6 @@
 import 'package:calorie_tracker_app/domain/models/food.dart';
 import 'package:calorie_tracker_app/ui/calorie_tracking_screen/view_model/calorie_tracking_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class FoodSearchDialog extends StatefulWidget {
   final CalorieTrackingViewModel viewModel;

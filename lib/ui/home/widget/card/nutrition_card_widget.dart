@@ -6,8 +6,6 @@ import 'package:calorie_tracker_app/core/ui/custom_text.dart';
 class NutritionCardWidgets {
   /// Builds a consistent food image widget
   static Widget buildFoodImage(String? imagePath, double size) {
-    debugPrint("Image: $imagePath");
-
     ImageProvider? imageProvider;
 
     if (imagePath != null && imagePath.isNotEmpty) {

@@ -4,20 +4,23 @@ import 'package:calorie_tracker_app/domain/models/nutrition_data.dart';
 import 'package:calorie_tracker_app/domain/models/user.dart';
 import 'package:calorie_tracker_app/domain/use_cases/calculate_nutrients_usecase.dart';
 import 'package:calorie_tracker_app/routes/routes.dart';
+import 'package:calorie_tracker_app/ui/calorie_tracking_screen/calorie_tracking_provider.dart';
 import 'package:calorie_tracker_app/ui/home/widget/date_picker_header.dart';
 import 'package:calorie_tracker_app/ui/home/widget/nutrition_card.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_tracker_app/core/theme/app_theme.dart';
 import 'package:calorie_tracker_app/core/ui/nutrition_progress.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:calorie_tracker_app/domain/models/food_item.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   DateTime selectedDate = DateTime.now();
   User? _user;
   NutrientGoalResult? _nutrientGoalResult;
@@ -26,36 +29,35 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadUserData();
+    // Load daily summary for the selected date
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(calorieTrackingProvider).setSelectedDate(selectedDate);
+    });
   }
 
   Future<void> _loadUserData() async {
     final sharedPrefsService = SharedPrefsService();
     final user = await sharedPrefsService.loadUser();
-
     final calculateMealNutrients = CalculateMealNutrients(sharedPrefsService);
     final result = await calculateMealNutrients();
-
-    setState(() {
-      _user = user;
-      _nutrientGoalResult = result;
-    });
-
-    if (result != null) {
-      debugPrint('Calories Goal: ${result.caloriesGoal}');
-      debugPrint('Carbs Goal: ${result.carbsGoal}');
-      debugPrint('Protein Goal: ${result.proteinGoal}');
-      debugPrint('Fat Goal: ${result.fatGoal}');
+    if (mounted) {
+      setState(() {
+        _user = user;
+        _nutrientGoalResult = result;
+      });
     }
   }
 
   void _incrementDate() {
-    setState(() => selectedDate = selectedDate.add(const Duration(days: 1)));
+    final newDate = selectedDate.add(const Duration(days: 1));
+    setState(() => selectedDate = newDate);
+    ref.read(calorieTrackingProvider).setSelectedDate(newDate);
   }
 
   void _decrementDate() {
-    setState(
-      () => selectedDate = selectedDate.subtract(const Duration(days: 1)),
-    );
+    final newDate = selectedDate.subtract(const Duration(days: 1));
+    setState(() => selectedDate = newDate);
+    ref.read(calorieTrackingProvider).setSelectedDate(newDate);
   }
 
   void _selectDate() async {
@@ -67,19 +69,46 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (picked != null && picked != selectedDate) {
       setState(() => selectedDate = picked);
+      ref.read(calorieTrackingProvider).setSelectedDate(picked);
     }
   }
 
-  void _addFood(String mealType) {
-    Navigator.pushNamed(
+  void _addFood(String mealType) async {
+    final result = await Navigator.pushNamed(
       context,
       AppRoutes.foodSearch,
-      arguments: {'mealType': mealType},
+      arguments: {'mealType': mealType, 'selectedDate': selectedDate},
     );
+
+    if (result == true) {
+      // ✅ Refresh meals if one was added
+      ref.read(calorieTrackingProvider).loadDailySummary();
+    }
+  }
+
+  void _removeFoodFromMeal(int trackedFoodId) {
+    ref.read(calorieTrackingProvider).removeFoodFromMeal(trackedFoodId);
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = ref.watch(calorieTrackingProvider);
+    final dailySummary = viewModel.dailySummary;
+    // Calculate total nutrition from daily summary
+    double totalCalories = 0;
+    double totalCarbs = 0;
+    double totalProtein = 0;
+    double totalFat = 0;
+
+    if (dailySummary != null) {
+      for (final meal in dailySummary.meals) {
+        totalCalories += meal.totalCalories;
+        totalCarbs += meal.totalCarbs;
+        totalProtein += meal.totalProtein;
+        totalFat += meal.totalFat;
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -99,16 +128,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Single combined nutrition progress
                     NutritionRingProgress(
-                      carbsValue: 117,
-                      carbsGoal: 150,
-                      proteinValue: 78,
-                      proteinGoal: 120,
-                      fatValue: 84,
-                      fatGoal: 100,
-                      totalCalories: 1512,
-                      totalGoal: (_nutrientGoalResult?.caloriesGoal ?? 0)
+                      carbsValue: totalCarbs,
+                      carbsGoal: (_nutrientGoalResult?.carbsGoal ?? 150)
+                          .toDouble(),
+                      proteinValue: totalProtein,
+                      proteinGoal: (_nutrientGoalResult?.proteinGoal ?? 120)
+                          .toDouble(),
+                      fatValue: totalFat,
+                      fatGoal: (_nutrientGoalResult?.fatGoal ?? 100).toDouble(),
+                      totalCalories: totalCalories,
+                      totalGoal: (_nutrientGoalResult?.caloriesGoal ?? 2000)
                           .toDouble(),
                     ),
                   ],
@@ -118,73 +148,90 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DatePickerHeader(
-              selectedDate: selectedDate,
-              onPrevious: _decrementDate,
-              onNext: _incrementDate,
-              onSelectDate: _selectDate,
+      body: viewModel.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: DatePickerHeader(
+                    selectedDate: selectedDate,
+                    onPrevious: _decrementDate,
+                    onNext: _incrementDate,
+                    onSelectDate: _selectDate,
+                  ),
+                ),
+                ..._buildMealCards(dailySummary),
+              ],
             ),
-          ),
-          NutritionCard(
-            type: NutritionCardType.mealSelector,
-            title: 'Breakfast',
-            imagePath: 'assets/images/breakfast.jpg',
-            nutritionData: NutritionData(
-              calories: 637,
-              carbs: 106,
-              protein: 8,
-              fat: 21,
-              weight: '400g',
-            ),
-            foodItems: [],
-            onTap: () => _addFood('Breakfast'),
-          ),
-          NutritionCard(
-            type: NutritionCardType.mealSelector,
-            title: 'Lunch',
-            imagePath: 'assets/images/lunch.jpg',
-            nutritionData: NutritionData(
-              calories: 0,
-              carbs: 0,
-              protein: 0,
-              fat: 0,
-            ),
-            foodItems: [],
-            onTap: () => _addFood('Lunch'),
-          ),
-          NutritionCard(
-            type: NutritionCardType.mealSelector,
-            title: 'Dinner',
-            imagePath: 'assets/images/dinner.jpg',
-            nutritionData: NutritionData(
-              calories: 0,
-              carbs: 0,
-              protein: 0,
-              fat: 0,
-            ),
-            foodItems: [],
-            onTap: () => _addFood('Dinner'),
-          ),
-          NutritionCard(
-            type: NutritionCardType.mealSelector,
-            title: 'Snacks',
-            imagePath: 'assets/images/snack.jpg',
-            nutritionData: NutritionData(
-              calories: 0,
-              carbs: 0,
-              protein: 0,
-              fat: 0,
-            ),
-            foodItems: [],
-            onTap: () => _addFood('Snacks'),
-          ),
-        ],
-      ),
     );
+  }
+
+  List<Widget> _buildMealCards(dailySummary) {
+    final mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+    final mealImages = {
+      'Breakfast': 'assets/images/breakfast.jpg',
+      'Lunch': 'assets/images/lunch.jpg',
+      'Dinner': 'assets/images/dinner.jpg',
+      'Snacks': 'assets/images/snack.jpg',
+    };
+
+    return mealTypes.map((mealType) {
+      // Find the meal summary for this meal type
+      final mealSummaryList = dailySummary?.meals
+          .where(
+            (meal) => meal.mealType.toLowerCase() == mealType.toLowerCase(),
+          )
+          .toList();
+
+      final mealSummary = mealSummaryList != null && mealSummaryList.isNotEmpty
+          ? mealSummaryList.first
+          : null;
+
+      // Convert tracked foods to food items for display
+      final List<FoodItem>? foodItems = mealSummary?.foods.isNotEmpty == true
+          ? mealSummary!.foods
+                .map<FoodItem>(
+                  (trackedFood) => FoodItem(
+                    name: trackedFood.name,
+                    weight: '${trackedFood.amount.toInt()}g',
+                    calories: trackedFood.calories,
+                    carbs: trackedFood.carbs,
+                    protein: trackedFood.protein,
+                    fat: trackedFood.fat,
+                    imagePath: trackedFood.imageUrl,
+                  ),
+                )
+                .toList()
+          : null;
+
+      return NutritionCard(
+        type: NutritionCardType.mealSelector,
+        title: mealType,
+        imagePath: mealImages[mealType],
+        nutritionData: NutritionData(
+          calories: mealSummary?.totalCalories.toInt() ?? 0,
+          carbs: mealSummary?.totalCarbs ?? 0,
+          protein: mealSummary?.totalProtein ?? 0,
+          fat: mealSummary?.totalFat ?? 0,
+        ),
+        foodItems: foodItems,
+        onTap: () => _addFood(mealType),
+        onFoodItemRemoved: (foodItem) {
+          // Find the tracked food ID and remove it
+          final matchingFoods = mealSummary?.foods
+              .where((tf) => tf.name == foodItem.name)
+              .toList();
+
+          final trackedFood = matchingFoods != null && matchingFoods.isNotEmpty
+              ? matchingFoods.first
+              : null;
+
+          if (trackedFood != null && trackedFood.id != null) {
+            _removeFoodFromMeal(trackedFood.id!);
+          }
+        },
+      );
+    }).toList();
   }
 }

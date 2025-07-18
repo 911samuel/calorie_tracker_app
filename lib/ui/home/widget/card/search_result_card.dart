@@ -85,7 +85,7 @@ class _SearchResultCardState extends State<SearchResultCard> {
                           Row(
                             children: [
                               Text(
-                                widget.nutritionData!.weight ?? '',
+                                widget.nutritionData!.weight ?? '100g',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textGray,
@@ -181,6 +181,10 @@ class _SearchResultCardState extends State<SearchResultCard> {
                       ],
                     ),
                   ),
+                  Icon(
+                    _showInputField ? Icons.keyboard_arrow_up : Icons.add,
+                    color: AppColors.textGray,
+                  ),
                 ],
               ),
             ),
@@ -191,9 +195,16 @@ class _SearchResultCardState extends State<SearchResultCard> {
               padding: const EdgeInsets.all(16),
               child: NutritionCardWidgets.buildInputRow(
                 controller: _controller,
-                onSave: widget.onSave ?? () {},
+                onSave: () {
+                  if (_controller.text.isNotEmpty) {
+                    widget.onInputSubmitted?.call(_controller.text);
+                    widget.onSave?.call();
+                  }
+                },
                 onInputChanged: widget.onInputChanged,
-                onInputSubmitted: widget.onInputSubmitted,
+                onInputSubmitted: (value) {
+                  widget.onInputSubmitted?.call(value);
+                },
               ),
             ),
           ],

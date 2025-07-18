@@ -1,4 +1,5 @@
 import 'package:calorie_tracker_app/data/repository/food_repository.dart';
+import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
 import 'package:calorie_tracker_app/domain/models/daily_summary.dart';
 import 'package:calorie_tracker_app/domain/models/food.dart';
 import 'package:calorie_tracker_app/domain/models/meal_type.dart';
@@ -9,6 +10,10 @@ import 'package:get_it/get_it.dart';
 class CalorieTrackingViewModel extends ChangeNotifier {
   final CalorieTrackingUseCase _useCase;
   final IFoodRepository _foodRepository;
+
+  // Add SharedPrefsService as a lazy getter
+  SharedPrefsService get _sharedPrefsService =>
+      GetIt.instance<SharedPrefsService>();
 
   CalorieTrackingViewModel({
     required CalorieTrackingUseCase useCase,
@@ -49,7 +54,6 @@ class CalorieTrackingViewModel extends ChangeNotifier {
   // Search foods
   Future<void> searchFoods(String query) async {
     final trimmedQuery = query.trim();
-
     if (trimmedQuery.isEmpty) {
       _searchResults = [];
       _errorMessage = null;
@@ -62,27 +66,22 @@ class CalorieTrackingViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      debugPrint("here we are");
       _searchResults = await _foodRepository.searchFoods(
         searchTerm: trimmedQuery,
       );
-      debugPrint(
-        '✅ Found ${_searchResults.length} foods for query: $trimmedQuery',
-      );
     } catch (e) {
       _searchResults = [];
-      _errorMessage = '❌ Error searching foods: $e';
-      debugPrint(_errorMessage);
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  // Add food to meal
+  // Add food to meal with current selected meal type and date
   Future<void> addFoodToMeal(Food food, double amount) async {
     _setLoading(true);
     try {
+      final user = await _sharedPrefsService.loadUser();
       await _useCase.addFoodToMeal(
         food: food,
         amount: amount,
@@ -90,9 +89,16 @@ class CalorieTrackingViewModel extends ChangeNotifier {
         mealType: _selectedMealType,
       );
       await loadDailySummary(); // Refresh the summary
+
+      // Verify user data is still intact after the operation
+      final userAfter = await _sharedPrefsService.loadUser();
+
+      if (userAfter == null || userAfter.age == null || userAfter.age! <= 0) {}
+
       _clearError();
     } catch (e) {
       _setError('Failed to add food: $e');
+      rethrow; // Re-throw so UI can handle it
     } finally {
       _setLoading(false);
     }

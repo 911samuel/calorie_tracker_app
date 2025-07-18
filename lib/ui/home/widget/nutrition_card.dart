@@ -4,7 +4,6 @@ import 'package:calorie_tracker_app/domain/models/nutrition_data.dart';
 import 'package:calorie_tracker_app/ui/home/widget/nutrition_card_factory.dart';
 import 'package:flutter/material.dart';
 
-/// Main nutrition card widget that uses factory pattern to create different card types
 class NutritionCard extends StatelessWidget {
   final NutritionCardType type;
   final String title;
