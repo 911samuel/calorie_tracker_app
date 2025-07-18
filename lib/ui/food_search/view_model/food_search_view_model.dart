@@ -1,9 +1,17 @@
 import 'package:calorie_tracker_app/data/repository/food_repository.dart';
 import 'package:calorie_tracker_app/domain/models/food.dart';
 import 'package:calorie_tracker_app/config/service_locator.dart';
+import 'package:calorie_tracker_app/ui/food_search/view_model/calorie_tracking_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FoodSearchViewModel extends ChangeNotifier {
+  bool _isAdding = false;
+  String? _addError;
+
+  bool get isAdding => _isAdding;
+  String? get addError => _addError;
+
   final IFoodRepository _foodRepository;
 
   // Constructor with fallback to GetIt
@@ -87,9 +95,52 @@ class FoodSearchViewModel extends ChangeNotifier {
   bool get hasError => _errorMessage != null;
   bool get isEmpty => _foods.isEmpty && !_isLoading && !hasError;
 
+  // Add food to meal, with validation and state
+  Future<bool> addFoodToMeal({
+    required dynamic food,
+    required String amountStr,
+    required String mealType,
+    required DateTime selectedDate,
+    required WidgetRef ref,
+  }) async {
+    final amount = double.tryParse(amountStr);
+    if (amount == null || amount <= 0) {
+      _addError = 'Please enter a valid amount';
+      notifyListeners();
+      return false;
+    }
+    if (_isAdding) return false;
+    _isAdding = true;
+    _addError = null;
+    notifyListeners();
+    try {
+      ref.read(calorieTrackingProvider).setSelectedMealType(mealType);
+      ref.read(calorieTrackingProvider).setSelectedDate(selectedDate);
+      await ref.read(calorieTrackingProvider).addFoodToMeal(food, amount);
+      _addError = null;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _addError = 'Error adding food: $e';
+      notifyListeners();
+      return false;
+    } finally {
+      _isAdding = false;
+      notifyListeners();
+    }
+  }
+
+  final foodSearchProvider = ChangeNotifierProvider<FoodSearchViewModel>((ref) {
+    return FoodSearchViewModel(foodRepository: getIt<IFoodRepository>());
+  });
+
   @override
   void dispose() {
     // Clean up if needed
     super.dispose();
   }
 }
+
+final foodSearchViewModelProvider = ChangeNotifierProvider(
+  (ref) => FoodSearchViewModel(),
+);

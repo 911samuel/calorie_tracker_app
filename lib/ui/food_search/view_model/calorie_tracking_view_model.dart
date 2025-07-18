@@ -1,3 +1,4 @@
+import 'package:calorie_tracker_app/config/service_locator.dart';
 import 'package:calorie_tracker_app/data/repository/food_repository.dart';
 import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
 import 'package:calorie_tracker_app/domain/models/daily_summary.dart';
@@ -5,6 +6,7 @@ import 'package:calorie_tracker_app/domain/models/food.dart';
 import 'package:calorie_tracker_app/domain/models/meal_type.dart';
 import 'package:calorie_tracker_app/domain/use_cases/calorie_tracking_usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
 class CalorieTrackingViewModel extends ChangeNotifier {
@@ -78,7 +80,7 @@ class CalorieTrackingViewModel extends ChangeNotifier {
   }
 
   // Add food to meal with current selected meal type and date
-  Future<void> addFoodToMeal(Food food, double amount) async {
+  Future<bool> addFoodToMeal(Food food, double amount) async {
     _setLoading(true);
     try {
       await _useCase.addFoodToMeal(
@@ -95,9 +97,10 @@ class CalorieTrackingViewModel extends ChangeNotifier {
       if (userAfter == null || userAfter.age == null || userAfter.age! <= 0) {}
 
       _clearError();
+      return true;
     } catch (e) {
       _setError('Failed to add food: $e');
-      rethrow; // Re-throw so UI can handle it
+      return false;
     } finally {
       _setLoading(false);
     }
@@ -130,6 +133,19 @@ class CalorieTrackingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a method to pick a date using the context, and set it if changed
+  Future<void> pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setSelectedDate(picked);
+    }
+  }
+
   // Clear search results
   void clearSearchResults() {
     _searchResults = [];
@@ -151,5 +167,12 @@ class CalorieTrackingViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
   }
-
 }
+
+final calorieTrackingProvider =
+    ChangeNotifierProvider<CalorieTrackingViewModel>((ref) {
+      return CalorieTrackingViewModel(
+        useCase: getIt<CalorieTrackingUseCase>(),
+        foodRepository: getIt<IFoodRepository>(),
+      )..loadDailySummary();
+    });
