@@ -181,7 +181,6 @@ class NutritionRingProgress extends StatelessWidget {
     required Color backgroundColor,
   }) {
     final progress = (value / goal).clamp(0.0, 1.0);
-
     return Column(
       children: [
         RingProgressBar(

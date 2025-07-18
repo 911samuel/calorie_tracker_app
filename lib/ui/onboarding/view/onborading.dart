@@ -1,4 +1,4 @@
-import 'package:calorie_tracker_app/domain/user.dart';
+import 'package:calorie_tracker_app/domain/models/user.dart';
 import 'package:calorie_tracker_app/routes/routes.dart';
 import 'package:calorie_tracker_app/ui/onboarding/view_model/onboarding_view_model.dart';
 import 'package:flutter/material.dart';

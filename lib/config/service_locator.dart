@@ -1,6 +1,11 @@
 import 'package:calorie_tracker_app/config/api_config.dart';
 import 'package:calorie_tracker_app/data/repository/food_repository.dart';
+import 'package:calorie_tracker_app/data/repository/tracked_food_repository.dart';
+import 'package:calorie_tracker_app/data/services/db_helper.dart';
 import 'package:calorie_tracker_app/data/services/food_api_service.dart';
+import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
+import 'package:calorie_tracker_app/data/services/tracked_food_service.dart';
+import 'package:calorie_tracker_app/domain/use_cases/calorie_tracking_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -27,6 +32,42 @@ void setupServiceLocator() {
     if (getIt.isRegistered<Dio>()) {
       getIt.unregister<Dio>();
     }
+    if (getIt.isRegistered<SharedPrefsService>()) {
+      getIt.unregister<SharedPrefsService>();
+    }
+    if (getIt.isRegistered<CalorieTrackingUseCase>()) {
+      getIt.unregister<CalorieTrackingUseCase>();
+    }
+    if (getIt.isRegistered<ITrackedFoodRepository>()) {
+      getIt.unregister<ITrackedFoodRepository>();
+    }
+    if (getIt.isRegistered<TrackedFoodService>()) {
+      getIt.unregister<TrackedFoodService>();
+    }
+    if (getIt.isRegistered<DBHelper>()) {
+      getIt.unregister<DBHelper>();
+    }
+
+    // Register SharedPrefsService
+    getIt.registerLazySingleton<SharedPrefsService>(() => SharedPrefsService());
+
+    // Register database helper
+    getIt.registerLazySingleton<DBHelper>(() => DBHelper());
+
+    // Register tracked food service
+    getIt.registerLazySingleton<TrackedFoodService>(
+      () => TrackedFoodService(dbHelper: getIt<DBHelper>()),
+    );
+
+    // Register tracked food repository
+    getIt.registerLazySingleton<ITrackedFoodRepository>(
+      () => TrackedFoodRepository(service: getIt<TrackedFoodService>()),
+    );
+
+    // Register use case
+    getIt.registerLazySingleton<CalorieTrackingUseCase>(
+      () => CalorieTrackingUseCase(repository: getIt<ITrackedFoodRepository>()),
+    );
 
     // Register Dio HTTP client
     getIt.registerLazySingleton<Dio>(
@@ -64,4 +105,3 @@ void setupServiceLocator() {
     rethrow;
   }
 }
-

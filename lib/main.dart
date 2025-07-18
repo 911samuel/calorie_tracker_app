@@ -7,15 +7,15 @@ import 'routes/router.dart';
 import 'routes/routes.dart';
 
 import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
-import 'package:calorie_tracker_app/domain/user.dart';
+import 'package:calorie_tracker_app/domain/models/user.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  FlutterNativeSplash.remove();
   await dotenv.load(fileName: '.env');
   setupServiceLocator();
+  FlutterNativeSplash.remove();
   runApp(const ProviderScope(child: CalorieTrackerApp()));
 }
 
@@ -50,11 +50,7 @@ class _CalorieTrackerAppState extends State<CalorieTrackerApp> {
   @override
   Widget build(BuildContext context) {
     if (_initialRoute == null) {
-      return const Material(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Material(child: Center(child: CircularProgressIndicator()));
     }
     return MaterialApp(
       title: 'Calorie Tracker App',

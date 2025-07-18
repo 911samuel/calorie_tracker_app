@@ -15,7 +15,10 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>?;
         final mealType = args?['mealType'] ?? 'Meal';
         return MaterialPageRoute(
-          builder: (_) => FoodSearchScreen(title: 'Add $mealType'),
+          builder: (_) => FoodSearchScreen(
+            mealType: args?['mealType'] ?? 'Breakfast',
+            selectedDate: args?['selectedDate'] ?? DateTime.now(),
+          ),
         );
 
       default:

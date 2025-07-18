@@ -1,5 +1,5 @@
 import 'package:calorie_tracker_app/data/repository/food_repository.dart';
-import 'package:calorie_tracker_app/domain/food.dart';
+import 'package:calorie_tracker_app/domain/models/food.dart';
 import 'package:calorie_tracker_app/config/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +43,6 @@ class FoodSearchViewModel extends ChangeNotifier {
 
     try {
       _foods = await _foodRepository.searchFoods(searchTerm: trimmedQuery);
-      debugPrint('✅ Found ${_foods.length} foods for query: $trimmedQuery');
 
       // Only update if this is still the current query (handle race conditions)
       if (_lastQuery == trimmedQuery) {
@@ -55,7 +54,6 @@ class FoodSearchViewModel extends ChangeNotifier {
         _errorMessage = e.toString();
         _foods = [];
       }
-      debugPrint('❌ Error searching foods: $e');
     } finally {
       // Only update loading state if this is still the current query
       if (_lastQuery == trimmedQuery) {

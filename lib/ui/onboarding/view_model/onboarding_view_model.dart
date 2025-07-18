@@ -1,6 +1,6 @@
 import 'package:calorie_tracker_app/data/services/shared_prefs_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../domain/user.dart';
+import '../../../domain/models/user.dart';
 import '../../../data/repository/onboarding_repository.dart';
 
 class OnboardingState {
