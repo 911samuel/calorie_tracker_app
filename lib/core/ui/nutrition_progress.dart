@@ -1,6 +1,6 @@
 import 'package:calorie_tracker_app/core/theme/app_colors.dart';
 import 'package:calorie_tracker_app/core/ui/custom_text.dart';
-import 'package:calorie_tracker_app/core/ui/ring_progress.dart';
+import 'package:calorie_tracker_app/core/ui/nutrition_ring.dart';
 import 'package:flutter/material.dart';
 
 class NutritionRingProgress extends StatelessWidget {
@@ -144,7 +144,7 @@ class NutritionRingProgress extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Carbs
-            _buildNutritionRing(
+            NutritionRing(
               value: carbsValue,
               goal: carbsGoal,
               label: 'Carbs',
@@ -152,7 +152,7 @@ class NutritionRingProgress extends StatelessWidget {
               backgroundColor: AppColors.carbsBackground,
             ),
             // Protein
-            _buildNutritionRing(
+            NutritionRing(
               value: proteinValue,
               goal: proteinGoal,
               label: 'Protein',
@@ -160,7 +160,7 @@ class NutritionRingProgress extends StatelessWidget {
               backgroundColor: AppColors.proteinBackground,
             ),
             // Fat
-            _buildNutritionRing(
+            NutritionRing(
               value: fatValue,
               goal: fatGoal,
               label: 'Fat',
@@ -168,47 +168,6 @@ class NutritionRingProgress extends StatelessWidget {
               backgroundColor: AppColors.fatBackground,
             ),
           ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNutritionRing({
-    required double value,
-    required double goal,
-    required String label,
-    required Color color,
-    required Color backgroundColor,
-  }) {
-    final progress = (value / goal).clamp(0.0, 1.0);
-    return Column(
-      children: [
-        RingProgressBar(
-          progress: progress,
-          size: 80,
-          strokeWidth: 6,
-          progressColor: color,
-          backgroundColor: backgroundColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${value.toInt()} g',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.cardWhite,
-                ),
-              ),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.cardWhite,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );

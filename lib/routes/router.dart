@@ -13,7 +13,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case AppRoutes.foodSearch:
         final args = settings.arguments as Map<String, dynamic>?;
-        final mealType = args?['mealType'] ?? 'Meal';
         return MaterialPageRoute(
           builder: (_) => FoodSearchScreen(
             mealType: args?['mealType'] ?? 'Breakfast',
