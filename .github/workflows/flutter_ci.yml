@@ -39,7 +39,7 @@ jobs:
             echo "Test coverage ($COVERAGE%) is below 50%. PR cannot be merged."
             exit 1
           fi
-          echo "Test coverage is $COVERAGE% (>= 0%)"
+          echo "Test coverage is $COVERAGE% (>= 50%)"
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
