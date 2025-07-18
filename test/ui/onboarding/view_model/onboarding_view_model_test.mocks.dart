@@ -7,7 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:calorie_tracker_app/data/repository/onboarding_repository.dart'
     as _i2;
-import 'package:calorie_tracker_app/domain/user.dart' as _i4;
+import 'package:calorie_tracker_app/domain/models/user.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint

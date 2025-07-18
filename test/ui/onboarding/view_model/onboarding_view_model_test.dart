@@ -1,9 +1,9 @@
 import 'package:calorie_tracker_app/data/repository/onboarding_repository.dart';
+import 'package:calorie_tracker_app/domain/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:calorie_tracker_app/ui/onboarding/view_model/onboarding_view_model.dart';
-import 'package:calorie_tracker_app/domain/user.dart';
 
 import 'onboarding_view_model_test.mocks.dart';
 
