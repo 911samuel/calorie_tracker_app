@@ -14,7 +14,9 @@ class HomeViewModel extends ChangeNotifier {
 
   HomeViewModel(this.ref) {
     _loadUserData();
-    ref.read(calorieTrackingProvider).setSelectedDate(selectedDate);
+    Future.microtask(() {
+      ref.read(calorieTrackingProvider).setSelectedDate(selectedDate);
+    });
   }
 
   Future<void> _loadUserData() async {
