@@ -44,6 +44,17 @@ class WeightStep extends ConsumerWidget {
             }
           },
         ),
+        const SizedBox(height: 8),
+        Builder(builder: (context) {
+          final error = ref.watch(onboardingViewModelProvider).error;
+          if (error != null && error.contains("weight")) {
+            return Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
       ],
     );
   }

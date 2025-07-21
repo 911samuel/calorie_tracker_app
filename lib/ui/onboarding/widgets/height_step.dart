@@ -44,6 +44,17 @@ class HeightStep extends ConsumerWidget {
             }
           },
         ),
+        const SizedBox(height: 8),
+        Builder(builder: (context) {
+          final error = ref.watch(onboardingViewModelProvider).error;
+          if (error != null && error.contains("height")) {
+            return Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
       ],
     );
   }
