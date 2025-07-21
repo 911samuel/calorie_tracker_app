@@ -31,7 +31,7 @@ class WeightStep extends ConsumerWidget {
         CustomTextField(
           controller: weightController,
           keyboardType: TextInputType.number,
-          hintText: "70.0",
+          hintText: "70",
           suffixText: "kg",
           suffixTextColor: Colors.grey,
           isOnboarding: true, // Enable onboarding style
