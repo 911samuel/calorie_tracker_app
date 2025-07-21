@@ -25,6 +25,11 @@ void main() {
       mockCalorieTrackingViewModel = MockCalorieTrackingViewModel();
       mockFoodSearchViewModel = MockFoodSearchViewModel();
       testDate = DateTime(2024, 3, 15);
+
+      // Stub methods to avoid unimplemented errors
+      when(mockCalorieTrackingViewModel.setSelectedMealType(any)).thenReturn(null);
+      when(mockCalorieTrackingViewModel.setSelectedDate(any)).thenReturn(null);
+      when(mockFoodSearchViewModel.searchFoods(any)).thenAnswer((_) async => Future.value());
     });
 
     Widget createFoodSearchScreen({
