@@ -28,16 +28,33 @@ class SharedPrefsService {
     if (userJson == null) return null;
 
     final userMap = json.decode(userJson);
+
+    int? parseEnum(dynamic value) {
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
+
+    double? parseDouble(dynamic value) {
+      if (value == null) return null;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) return double.tryParse(value);
+      return null;
+    }
+
+
     return User(
-      gender: Gender.values[userMap['gender']],
-      age: userMap['age'],
-      height: userMap['height'],
-      weight: userMap['weight'],
-      activityLevel: ActivityLevel.values[userMap['activityLevel']],
-      goal: Goal.values[userMap['goal']],
-      carbPercentage: userMap['carbPercentage'],
-      proteinPercentage: userMap['proteinPercentage'],
-      fatPercentage: userMap['fatPercentage'],
+      gender: Gender.values[parseEnum(userMap['gender']) ?? 0],
+      age: userMap['age'] is int ? userMap['age'] : int.tryParse(userMap['age'].toString()),
+      height: parseDouble(userMap['height']),
+      weight: parseDouble(userMap['weight']),
+      activityLevel:
+          ActivityLevel.values[parseEnum(userMap['activityLevel']) ?? 0],
+      goal: Goal.values[parseEnum(userMap['goal']) ?? 0],
+      carbPercentage: parseDouble(userMap['carbPercentage']),
+      proteinPercentage: parseDouble(userMap['proteinPercentage']),
+      fatPercentage: parseDouble(userMap['fatPercentage']),
     );
   }
 }
