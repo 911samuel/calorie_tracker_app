@@ -41,16 +41,24 @@ class HeightStep extends ConsumerWidget {
               ref
                   .read(onboardingViewModelProvider.notifier)
                   .updateHeight(intHeight.toDouble());
+            } else if (value.isNotEmpty) {
+              // Trigger validation for invalid input
+              ref.read(onboardingViewModelProvider.notifier).updateHeight(0);
             }
           },
         ),
         const SizedBox(height: 8),
         Builder(builder: (context) {
-          final error = ref.watch(onboardingViewModelProvider).error;
-          if (error != null && error.contains("height")) {
-            return Text(
-              error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+          final viewModel = ref.watch(onboardingViewModelProvider.notifier);
+          final heightError = viewModel.getFieldError('height');
+          if (heightError != null) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                heightError,
+                style: const TextStyle(color: Colors.red, fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return const SizedBox.shrink();

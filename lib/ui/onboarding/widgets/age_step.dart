@@ -28,16 +28,24 @@ class AgeStep extends ConsumerWidget {
             final intAge = int.tryParse(value);
             if (intAge != null) {
               ref.read(onboardingViewModelProvider.notifier).updateAge(intAge);
+            } else if (value.isNotEmpty) {
+              // Trigger validation for invalid input
+              ref.read(onboardingViewModelProvider.notifier).updateAge(0);
             }
           },
         ),
         const SizedBox(height: 8),
         Builder(builder: (context) {
-          final error = ref.watch(onboardingViewModelProvider).error;
-          if (error != null && error.contains("age")) {
-            return Text(
-              error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+          final viewModel = ref.watch(onboardingViewModelProvider.notifier);
+          final ageError = viewModel.getFieldError('age');
+          if (ageError != null) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                ageError,
+                style: const TextStyle(color: Colors.red, fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return const SizedBox.shrink();
