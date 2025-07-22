@@ -41,16 +41,24 @@ class WeightStep extends ConsumerWidget {
               ref
                   .read(onboardingViewModelProvider.notifier)
                   .updateWeight(doubleWeight);
+            } else if (value.isNotEmpty) {
+              // Trigger validation for invalid input
+              ref.read(onboardingViewModelProvider.notifier).updateWeight(0);
             }
           },
         ),
         const SizedBox(height: 8),
         Builder(builder: (context) {
-          final error = ref.watch(onboardingViewModelProvider).error;
-          if (error != null && error.contains("weight")) {
-            return Text(
-              error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+          final viewModel = ref.watch(onboardingViewModelProvider.notifier);
+          final weightError = viewModel.getFieldError('weight');
+          if (weightError != null) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                weightError,
+                style: const TextStyle(color: Colors.red, fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return const SizedBox.shrink();

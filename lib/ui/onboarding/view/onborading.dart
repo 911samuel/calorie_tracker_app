@@ -72,27 +72,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   bool _isNextEnabled() {
+    final viewModel = ref.watch(onboardingViewModelProvider.notifier);
     final state = ref.watch(onboardingViewModelProvider);
     final user = state.user;
+    
     switch (_currentStep) {
       case 0:
         return true;
       case 1:
         return user?.gender != null;
       case 2:
-        return user?.age != null && user!.age! > 0;
+        return viewModel.isAgeValid();
       case 3:
-        return user?.height != null && user!.height! > 0;
+        return viewModel.isHeightValid();
       case 4:
-        return user?.weight != null && user!.weight! > 0;
+        return viewModel.isWeightValid();
       case 5:
         return user?.activityLevel != null;
       case 6:
         return user?.goal != null;
       case 7:
-        return user?.carbPercentage != null &&
-            user?.proteinPercentage != null &&
-            user?.fatPercentage != null;
+        return viewModel.areNutrientGoalsValid();
       default:
         return false;
     }

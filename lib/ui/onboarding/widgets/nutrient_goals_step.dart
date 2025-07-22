@@ -35,16 +35,24 @@ class NutrientGoalsStep extends ConsumerWidget {
             final val = double.tryParse(value);
             if (val != null) {
               ref.read(onboardingViewModelProvider.notifier).updateCarbsGoal(val);
+            } else if (value.isNotEmpty) {
+              // Trigger validation for invalid input
+              ref.read(onboardingViewModelProvider.notifier).updateCarbsGoal(-1);
             }
           },
         ),
         const SizedBox(height: 8),
         Builder(builder: (context) {
-          final error = ref.watch(onboardingViewModelProvider).error;
-          if (error != null && error.contains("carbs")) {
-            return Text(
-              error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+          final viewModel = ref.watch(onboardingViewModelProvider.notifier);
+          final carbsError = viewModel.getFieldError('carbs');
+          if (carbsError != null) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                carbsError,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return const SizedBox.shrink();
@@ -60,16 +68,24 @@ class NutrientGoalsStep extends ConsumerWidget {
             final val = double.tryParse(value);
             if (val != null) {
               ref.read(onboardingViewModelProvider.notifier).updateProteinGoal(val);
+            } else if (value.isNotEmpty) {
+              // Trigger validation for invalid input
+              ref.read(onboardingViewModelProvider.notifier).updateProteinGoal(-1);
             }
           },
         ),
         const SizedBox(height: 8),
         Builder(builder: (context) {
-          final error = ref.watch(onboardingViewModelProvider).error;
-          if (error != null && error.contains("protein")) {
-            return Text(
-              error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+          final viewModel = ref.watch(onboardingViewModelProvider.notifier);
+          final proteinError = viewModel.getFieldError('protein');
+          if (proteinError != null) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                proteinError,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return const SizedBox.shrink();
@@ -85,16 +101,24 @@ class NutrientGoalsStep extends ConsumerWidget {
             final val = double.tryParse(value);
             if (val != null) {
               ref.read(onboardingViewModelProvider.notifier).updateFatGoal(val);
+            } else if (value.isNotEmpty) {
+              // Trigger validation for invalid input
+              ref.read(onboardingViewModelProvider.notifier).updateFatGoal(-1);
             }
           },
         ),
         const SizedBox(height: 8),
         Builder(builder: (context) {
-          final error = ref.watch(onboardingViewModelProvider).error;
-          if (error != null && error.contains("fat")) {
-            return Text(
-              error,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+          final viewModel = ref.watch(onboardingViewModelProvider.notifier);
+          final fatError = viewModel.getFieldError('fat');
+          if (fatError != null) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                fatError,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return const SizedBox.shrink();
