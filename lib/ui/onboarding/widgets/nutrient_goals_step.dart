@@ -38,6 +38,17 @@ class NutrientGoalsStep extends ConsumerWidget {
             }
           },
         ),
+        const SizedBox(height: 8),
+        Builder(builder: (context) {
+          final error = ref.watch(onboardingViewModelProvider).error;
+          if (error != null && error.contains("carbs")) {
+            return Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
         const SizedBox(height: 16),
         CustomTextField(
           controller: proteinController,
@@ -52,6 +63,17 @@ class NutrientGoalsStep extends ConsumerWidget {
             }
           },
         ),
+        const SizedBox(height: 8),
+        Builder(builder: (context) {
+          final error = ref.watch(onboardingViewModelProvider).error;
+          if (error != null && error.contains("protein")) {
+            return Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
         const SizedBox(height: 16),
         CustomTextField(
           controller: fatController,
@@ -66,6 +88,17 @@ class NutrientGoalsStep extends ConsumerWidget {
             }
           },
         ),
+        const SizedBox(height: 8),
+        Builder(builder: (context) {
+          final error = ref.watch(onboardingViewModelProvider).error;
+          if (error != null && error.contains("fat")) {
+            return Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 12),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
       ],
     );
   }

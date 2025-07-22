@@ -31,37 +31,74 @@ class OnboardingViewModel extends StateNotifier<OnboardingState> {
   }
 
   void updateAge(int age) {
-    state = state.copyWith(user: state.user?.copyWith(age: age));
+    if (age <= 0 || age > 120) {
+      state = state.copyWith(error: "Please enter a valid age between 1 and 120.");
+    } else {
+      state = state.copyWith(user: state.user?.copyWith(age: age), error: null);
+    }
   }
 
   void updateHeight(double height) {
-    state = state.copyWith(user: state.user?.copyWith(height: height));
+    if (height <= 0 || height > 300) {
+      state = state.copyWith(error: "Please enter a valid height in cm.");
+    } else {
+      state = state.copyWith(user: state.user?.copyWith(height: height), error: null);
+    }
   }
 
   void updateWeight(double weight) {
-    state = state.copyWith(user: state.user?.copyWith(weight: weight));
+    if (weight <= 0 || weight > 500) {
+      state = state.copyWith(error: "Please enter a valid weight in kg.");
+    } else {
+      state = state.copyWith(user: state.user?.copyWith(weight: weight), error: null);
+    }
+  }
+
+  void updateCarbsGoal(double carbs) {
+    if (carbs < 0 || carbs > 100) {
+      state = state.copyWith(error: "Please enter a valid carbs percentage (0-100).");
+    } else {
+      state = state.copyWith(user: state.user?.copyWith(carbPercentage: carbs), error: null);
+    }
+  }
+
+  void updateProteinGoal(double protein) {
+    if (protein < 0 || protein > 100) {
+      state = state.copyWith(error: "Please enter a valid protein percentage (0-100).");
+    } else {
+      state = state.copyWith(user: state.user?.copyWith(proteinPercentage: protein), error: null);
+    }
+  }
+
+  void updateFatGoal(double fat) {
+    if (fat < 0 || fat > 100) {
+      state = state.copyWith(error: "Please enter a valid fat percentage (0-100).");
+    } else {
+      state = state.copyWith(user: state.user?.copyWith(fatPercentage: fat), error: null);
+    }
+  }
+
+  bool get isFormValid {
+    final user = state.user;
+    if (user == null) return false;
+    if (user.age == null || user.age! <= 0 || user.age! > 120) return false;
+    if (user.height == null || user.height! <= 0 || user.height! > 300) return false;
+    if (user.weight == null || user.weight! <= 0 || user.weight! > 500) return false;
+    if (user.carbPercentage == null || user.carbPercentage! < 0 || user.carbPercentage! > 100) return false;
+    if (user.proteinPercentage == null || user.proteinPercentage! < 0 || user.proteinPercentage! > 100) return false;
+    if (user.fatPercentage == null || user.fatPercentage! < 0 || user.fatPercentage! > 100) return false;
+    return true;
+  }
+
+  void clearError() {
+    state = state.copyWith(error: null);
   }
 
   void updateActivityLevel(ActivityLevel level) {
     state = state.copyWith(user: state.user?.copyWith(activityLevel: level));
   }
-
   void updateGoal(Goal goal) {
     state = state.copyWith(user: state.user?.copyWith(goal: goal));
-  }
-
-  void updateCarbsGoal(double carbs) {
-    state = state.copyWith(user: state.user?.copyWith(carbPercentage: carbs));
-  }
-
-  void updateProteinGoal(double protein) {
-    state = state.copyWith(
-      user: state.user?.copyWith(proteinPercentage: protein),
-    );
-  }
-
-  void updateFatGoal(double fat) {
-    state = state.copyWith(user: state.user?.copyWith(fatPercentage: fat));
   }
 
   // --- persistence ---
